@@ -67,11 +67,15 @@ public class BattleshipMainMenu extends JFrame {
 		about.setFont(new Font("Times New Roman", Font.PLAIN, 20));
 		exit.setFont(new Font("Times New Roman", Font.PLAIN, 20));
 
+		/*
+		 * 	ActionListeners
+		 */
+		
 		singlePlayer.addActionListener(new ActionListener() {
 
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
-				new SPBattleship();
+				new BattleshipSP();
 			}
 
 		});
@@ -126,6 +130,10 @@ public class BattleshipMainMenu extends JFrame {
 		this.repaint();
 		this.revalidate();
 
+	}
+	
+	public static void main(String[] args) {
+		new BattleshipMainMenu();
 	}
 
 }
