@@ -108,6 +108,8 @@ public class BattleshipMainMenu extends JFrame {
 					
 					new BattleshipMP(serverIP, 8000);
 				}
+				
+				BattleshipMainMenu.this.setVisible(false);
 			}
 
 		});
