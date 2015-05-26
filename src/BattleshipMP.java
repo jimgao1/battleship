@@ -19,7 +19,6 @@ import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 
-
 public class BattleshipMP extends JFrame implements ActionListener, Runnable{
 
 	/*
@@ -84,9 +83,11 @@ public class BattleshipMP extends JFrame implements ActionListener, Runnable{
 			writer = new PrintWriter(sock.getOutputStream(), true);
 			
 			System.out.println("[INFO]\tConnection Established. IP:" + sock.getInetAddress());
+			JOptionPane.showMessageDialog(null, "Player Connected. IP: " + sock.getInetAddress());
 			playerTurn = true;
 			
 			initGUI();
+		
 		} catch (IOException ex){
 			System.out.println("[ERROR]\tConnection Error. " + ex.getLocalizedMessage());
 			JOptionPane.showMessageDialog(null, "Connection cannot be established.");
@@ -108,6 +109,7 @@ public class BattleshipMP extends JFrame implements ActionListener, Runnable{
 			playerTurn = false;
 			
 			initGUI();
+			JOptionPane.showMessageDialog(null, "Connected to server. ");
 		} catch (IOException ex){
 			System.out.println("[ERROR]\tConnection Error. " + ex.getLocalizedMessage());
 			JOptionPane.showMessageDialog(null, "Connection cannot be established.");
@@ -143,6 +145,10 @@ public class BattleshipMP extends JFrame implements ActionListener, Runnable{
 				opponentButtonGrid[i][j] = new JButton();
 				opponentButtonGrid[i][j].setActionCommand(i + " " + j);
 				opponentButtonGrid[i][j].addActionListener(this);
+				
+				if (!playerTurn)
+					opponentButtonGrid[i][j].setEnabled(false);
+				
 				pnlOpponent.add(opponentButtonGrid[i][j]);
 			}
 		}
@@ -156,7 +162,9 @@ public class BattleshipMP extends JFrame implements ActionListener, Runnable{
 			for (int j = 0; j < 10; j++) {
 				playerButtonGrid[i][j] = new JButton();
 				playerButtonGrid[i][j].setActionCommand(i + " " + j);
+				
 				playerButtonGrid[i][j].setEnabled(false);
+				
 				pnlPlayer.add(playerButtonGrid[i][j]);
 			}
 		}
@@ -172,6 +180,8 @@ public class BattleshipMP extends JFrame implements ActionListener, Runnable{
 		
 		this.repaint();
 		this.revalidate();
+		
+		nextTurn();
 	}
 	
 	public void generateRandomPlacement() {
@@ -232,6 +242,7 @@ public class BattleshipMP extends JFrame implements ActionListener, Runnable{
 	}
 	
 	public void nextTurn(){
+		
 		if (playerTurn){
 			lblStatus.setText("Your Turn");
 			
@@ -249,18 +260,24 @@ public class BattleshipMP extends JFrame implements ActionListener, Runnable{
 					}
 				}
 			}
+			
+			playerTurn = !playerTurn;
 		} else {
 			lblStatus.setText("Enemy's Turn");
 			
+			System.out.println("[INFO]\tWaiting for server....");
+			
 			String cmd = "";
 			
-			try {
+			try{
 				cmd = reader.readLine();
-			} catch (IOException e) {
-				System.out.println("[ERROR]\tRead Error: " + e.getLocalizedMessage());
-				JOptionPane.showMessageDialog(null, "Socket read error");
-				this.dispose();
+			} catch (IOException ex) {
+				JOptionPane.showMessageDialog(null, "Socket read error.");
+				System.out.println("[ERROR]\tSocket read error: " + ex.getLocalizedMessage());
 			}
+			
+			System.out.println("[INFO]\tEnemy Command: " + cmd);
+			System.out.println("[INFO]\tCommand Length: " + cmd.length());
 			
 			int hitLocationX = Integer.parseInt(cmd.split(" ")[0]);
 			int hitLocationY = Integer.parseInt(cmd.split(" ")[1]);
@@ -273,16 +290,42 @@ public class BattleshipMP extends JFrame implements ActionListener, Runnable{
 				playerButtonGrid[hitLocationX][hitLocationY].setIcon(new ImageIcon("fire.png"));
 			}
 			
+			playerTurn = !playerTurn;
 			nextTurn();
 		}
+		
 	}
 	
 	
 
 	@Override
-	public void actionPerformed(ActionEvent arg0) {
-		// TODO Auto-generated method stub
+	public void actionPerformed(ActionEvent e) {
+		writer.println(e.getActionCommand() + "");
+		writer.flush();
+		System.out.println("[INFO]\tSent to other host: "+ e.getActionCommand());
 		
+		String cmd = "";
+		
+		try{
+			cmd = reader.readLine();
+		} catch (IOException ex){
+			JOptionPane.showMessageDialog(null, "Socket read error.");
+			System.out.println("[ERROR]\tSocket read error: " + ex.getLocalizedMessage());
+		}
+		
+		if (cmd.equals("hit")){
+			System.out.println("[INFO]\tServer Response: hit");
+			JOptionPane.showMessageDialog(null, "It was a HIT");
+		} else if (cmd.equals("miss")){
+			System.out.println("[INFO]\tServer Response: miss");
+			JOptionPane.showMessageDialog(null, "It was a MISS");
+		}
+
+		for (int i = 0; i < 10; i++)
+			for (int j = 0; j < 10; j++)
+				opponentButtonGrid[i][j].setEnabled(false);
+		
+		nextTurn();
 	}
 
 	@Override
