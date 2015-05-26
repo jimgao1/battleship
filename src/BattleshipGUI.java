@@ -23,6 +23,16 @@ public class BattleshipGUI extends JFrame {
 
 			System.out.println("[INFO]\t Player Grid Action: "
 					+ e.getActionCommand());
+
+			if (SPBattleship.opponentPlacement[locationX][locationY] >= 1) {
+				AlgorithmMain.gridState[locationX][locationY] = SPBattleship.opponentPlacement[locationX][locationY];
+				System.out.println("[INFO]\tHit. ");
+			} else {
+				AlgorithmMain.gridState[locationX][locationY] = -2;
+				System.out.println("[INFO]\tMiss. ");
+			}
+
+			updateGrid();
 		}
 
 	}
@@ -37,6 +47,14 @@ public class BattleshipGUI extends JFrame {
 
 			System.out.println("[INFO]\t Opponent Grid Action: "
 					+ e.getActionCommand());
+
+			if (SPBattleship.playerPlacement[locationX][locationY] >= 1) {
+				AlgorithmMain.opponentState[locationX][locationY] = SPBattleship.playerPlacement[locationX][locationY];
+			} else {
+				AlgorithmMain.opponentState[locationX][locationY] = -2;
+			}
+
+			updateGrid();
 
 		}
 
@@ -66,6 +84,7 @@ public class BattleshipGUI extends JFrame {
 		this.setVisible(true);
 		this.setLayout(new BorderLayout(20, 5));
 		this.setLocation(100, 100);
+		this.setResizable(false);
 
 		pnlHeader.setLayout(new BorderLayout());
 
@@ -116,14 +135,19 @@ public class BattleshipGUI extends JFrame {
 		this.add(lblStatus, BorderLayout.SOUTH);
 	}
 
-	public void updateGrid() {
-		for (int i = 0; i < 10; i++){
+	public static void updateGrid() {
+
+		/*
+		 * Step 2: Update the physical location on the GUI
+		 */
+
+		for (int i = 0; i < 10; i++) {
 			for (int j = 0; j < 10; j++) {
 				if (AlgorithmMain.gridState[i][j] == 0) {
 					// DO NOTHING HERE
-				} else if (AlgorithmMain.gridState[i][j] == -1) {
-					playerGrid[i][j].setBackground(Color.black);
 				} else if (AlgorithmMain.gridState[i][j] == -2) {
+					playerGrid[i][j].setBackground(Color.black);
+				} else if (AlgorithmMain.gridState[i][j] == -1) {
 					playerGrid[i][j].setBackground(Color.red);
 				} else {
 					playerGrid[i][j].setBackground(Color.red);
@@ -131,9 +155,10 @@ public class BattleshipGUI extends JFrame {
 
 				if (AlgorithmMain.opponentState[i][j] == 0) {
 					// DO NOTHING HERE
-				} else if (AlgorithmMain.opponentState[i][j] == -1) {
-					opponentGrid[i][j].setBackground(Color.black);
 				} else if (AlgorithmMain.opponentState[i][j] == -2) {
+					opponentGrid[i][j].setBackground(Color.black);
+					opponentGrid[i][j].setEnabled(false);
+				} else if (AlgorithmMain.opponentState[i][j] == -1) {
 					opponentGrid[i][j].setBackground(Color.red);
 				} else {
 					opponentGrid[i][j].setBackground(Color.red);
