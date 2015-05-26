@@ -94,8 +94,20 @@ public class BattleshipMainMenu extends JFrame {
 
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
-				// TODO Auto-generated method stub
-
+				String[] modes = {"Client Mode", "Server Mode"};
+				
+				int option = JOptionPane.showOptionDialog(null,
+						"client or server?", "mode", JOptionPane.YES_NO_OPTION,
+						JOptionPane.PLAIN_MESSAGE, null, modes, modes[0]);
+				
+				if (option == 1){
+					new BattleshipMP(8000);
+					
+				} else {
+					String serverIP = JOptionPane.showInputDialog(null, "Please enter the server IP");
+					
+					new BattleshipMP(serverIP, 8000);
+				}
 			}
 
 		});
