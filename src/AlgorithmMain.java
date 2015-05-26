@@ -27,13 +27,15 @@ public class AlgorithmMain {
 	/*
 	 * 		int[][] gridState: the status of the cells in the grid
 	 * 
-	 * 		0		Default
-	 * 		1		Hit (current round)
-	 * 		2		Hit (previous round)
-	 * 		3		Miss 
+	 * 		0 				Default
+	 * 		1 ~ n + 1		Hit (with ship i, current round)
+	 * 		-1 				Hit (previous round)
+	 * 		-2				Miss
 	 */
 	
 	public static int[][] gridState = new int[gridSizeX][gridSizeY];
+	public static int[][] opponentState = new int[gridSizeX][gridSizeY];
+	
 	public static double[][] gridProbability = new double[gridSizeX][gridSizeY];
 	
 	public static boolean[] shipSank = new boolean[shipCount];
