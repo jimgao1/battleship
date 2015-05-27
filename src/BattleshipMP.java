@@ -283,6 +283,8 @@ public class BattleshipMP extends JFrame implements ActionListener, Runnable{
 	
 	public void nextTurn(){
 		
+		System.out.println("\n[INFO]\tNew Round Started. PlayerTurn = " + playerTurn);
+		
 		if (playerTurn){
 			lblStatus.setText("Your Turn");
 			
