@@ -39,6 +39,7 @@ public class BattleshipMP extends JFrame implements ActionListener, Runnable{
 	public BufferedReader reader;
 	public PrintWriter writer;
 	
+	
 	/*
 	 * 		GUI components
 	 */
@@ -78,6 +79,18 @@ public class BattleshipMP extends JFrame implements ActionListener, Runnable{
 	public boolean playerTurn;
 	
 	public boolean firstRun = true;
+	
+	/*
+	 * 	Win/Lose indicator
+	 */
+	public int playerSank = 0;
+	public int enemySank = 0;
+	
+	/*
+	 * 	Score board indicator
+	 */
+	
+	
 	
 	/*
 	 * 	Constructor as SERVER
@@ -287,6 +300,8 @@ public class BattleshipMP extends JFrame implements ActionListener, Runnable{
 	
 	public void nextTurn(){
 		
+		
+		
 		System.out.println("\n[INFO]\tNew Round Started. PlayerTurn = " + playerTurn);
 		
 		if (playerTurn){
@@ -351,6 +366,7 @@ public class BattleshipMP extends JFrame implements ActionListener, Runnable{
 				writer.flush();
 				System.out.println("[INFO]\tEnemy Hit");
 				
+				
 				int shipID = playerGrid[hitLocationX][hitLocationY];
 				int shipCount = 0;
 
@@ -362,6 +378,12 @@ public class BattleshipMP extends JFrame implements ActionListener, Runnable{
 				if (shipCount == 1){
 					writer.println("true");
 					System.out.println("[INFO]\tThe ship was sank.");
+					enemySank += 1;
+					if (enemySank >= 5){
+						System.out.println("[INFO]\tYou have lost the game. ");
+						JOptionPane.showMessageDialog(null, "You have lost the game.");
+						this.dispose();
+					}
 				} else {
 					writer.println("false");
 				}
@@ -377,8 +399,6 @@ public class BattleshipMP extends JFrame implements ActionListener, Runnable{
 		}
 		
 	}
-	
-	
 
 	@Override
 	public void actionPerformed(ActionEvent e) {
@@ -436,6 +456,13 @@ public class BattleshipMP extends JFrame implements ActionListener, Runnable{
 				JOptionPane.showMessageDialog(null, "You sank the " + shipNames[shipID - 1]);
 			else
 				JOptionPane.showMessageDialog(null, "You hit the " + shipNames[shipID - 1]);
+			
+			if (sunk) playerSank += 1;
+			if (playerSank >= 5){
+				System.out.println("[INFO]\tYou have won the game.");
+				JOptionPane.showMessageDialog(null, "You have won the game");
+				this.dispose();
+			}
 		}
 
 		for (int i = 0; i < 10; i++)
