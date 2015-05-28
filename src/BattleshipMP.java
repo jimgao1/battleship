@@ -339,9 +339,27 @@ public class BattleshipMP extends JFrame implements ActionListener, Runnable{
 				playerButtonGrid[hitLocationX][hitLocationY].setIcon(new ImageIcon("water.png"));
 				playerButtonGrid[hitLocationX][hitLocationY].setText("");
 			} else {
-				writer.println("hit");
+				writer.println(Integer.toString(playerGrid[hitLocationX][hitLocationY]));
 				writer.flush();
 				System.out.println("[INFO]\tEnemy Hit");
+				
+				int shipID = playerGrid[hitLocationX][hitLocationY];
+				int shipCount = 0;
+
+				for (int i = 0; i < 10; i++)
+					for (int j = 0; j < 10; j++)
+						if (playerGrid[i][j] == shipID)
+							shipCount++;
+				
+				if (shipCount == 1){
+					writer.println("true");
+					System.out.println("[INFO]\tThe ship was sank.");
+				} else {
+					writer.println("false");
+				}
+				
+				playerGrid[hitLocationX][hitLocationY] = -1;
+				
 				playerButtonGrid[hitLocationX][hitLocationY].setIcon(new ImageIcon("fire.png"));
 				playerButtonGrid[hitLocationX][hitLocationY].setText("");
 			}
@@ -373,14 +391,39 @@ public class BattleshipMP extends JFrame implements ActionListener, Runnable{
 			System.out.println("[ERROR]\tSocket read error: " + ex.getLocalizedMessage());
 		}
 		
-		if (cmd.equals("hit")){
-			System.out.println("[INFO]\tServer Response: hit");
-			opponentButtonGrid[locationX][locationY].setIcon(new ImageIcon("fire.png"));
-			JOptionPane.showMessageDialog(null, "It was a HIT");
-		} else if (cmd.equals("miss")){
+		if (cmd.equals("miss")){
 			System.out.println("[INFO]\tServer Response: miss");
 			opponentButtonGrid[locationX][locationY].setIcon(new ImageIcon("water.png"));
+			opponentButtonGrid[locationX][locationY].setBackground(Color.BLUE);
 			JOptionPane.showMessageDialog(null, "It was a MISS");
+		} else {
+
+			/*
+			 * 		Get if the ship is sunk
+			 */
+			
+			String strSunk = "";
+			
+			try{
+				strSunk = reader.readLine();
+			} catch (IOException ex){
+				JOptionPane.showMessageDialog(null, "Socket read error.");
+				System.out.println("[ERROR]\tSocket read error: " + ex.getLocalizedMessage());
+			}
+			
+			boolean sunk = strSunk.equals("true");
+			
+			int shipID = Integer.parseInt(cmd);
+			System.out.println("[INFO]\tServer Response: hit");
+			System.out.println("[INFO]\tShip Hit: " + shipID);
+			System.out.println("[INFO]\tSunk? " + sunk);
+			opponentButtonGrid[locationX][locationY].setIcon(new ImageIcon("fire.png"));
+			opponentButtonGrid[locationX][locationY].setBackground(Color.RED);
+			
+			if (sunk)
+				JOptionPane.showMessageDialog(null, "It was a SINK!!");
+			else
+				JOptionPane.showMessageDialog(null, "It was a HIT");
 		}
 
 		for (int i = 0; i < 10; i++)
