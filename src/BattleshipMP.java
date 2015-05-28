@@ -26,6 +26,10 @@ import javax.swing.JPanel;
 
 public class BattleshipMP extends JFrame implements ActionListener, Runnable{
 
+	public static final String[] shipNames = {
+		"Destroyer", "Submarine", "Cruiser", "Battleship", "Carrier"
+	};
+	
 	/*
 	 * 		TCP/IP stuff
 	 */
@@ -47,7 +51,7 @@ public class BattleshipMP extends JFrame implements ActionListener, Runnable{
 	public JPanel pnlControls = new JPanel();
 	public JPanel pnlHeader = new JPanel();
 
-	public JLabel lblStatus = new JLabel("This is the current status");
+	public JLabel lblStatus = new JLabel("");
 
 	public JLabel lblLeft = new JLabel("Opponent's Grid", JLabel.CENTER);
 	public JLabel lblRight = new JLabel("Your Grid", JLabel.CENTER);
@@ -287,6 +291,8 @@ public class BattleshipMP extends JFrame implements ActionListener, Runnable{
 		
 		if (playerTurn){
 			lblStatus.setText("Your Turn");
+			this.repaint();
+			this.revalidate();
 			
 			for (int i = 0; i < 10; i++) {
 				for (int j = 0; j < 10; j++) {
@@ -312,6 +318,8 @@ public class BattleshipMP extends JFrame implements ActionListener, Runnable{
 			}
 			
 			lblStatus.setText("Enemy's Turn");
+			this.repaint();
+			this.revalidate();
 			
 			System.out.println("[INFO]\tWaiting for server....");
 			
@@ -378,6 +386,10 @@ public class BattleshipMP extends JFrame implements ActionListener, Runnable{
 		int locationX = Integer.parseInt(e.getActionCommand().split(" ")[0]);
 		int locationY = Integer.parseInt(e.getActionCommand().split(" ")[1]);
 		
+		for (int i = 0; i < 10; i++)
+			for (int j = 0; j < 10; j++)
+				opponentButtonGrid[i][j].setEnabled(false);
+		
 		writer.println(e.getActionCommand() + "");
 		writer.flush();
 		System.out.println("[INFO]\tSent to other host: "+ e.getActionCommand());
@@ -421,9 +433,9 @@ public class BattleshipMP extends JFrame implements ActionListener, Runnable{
 			opponentButtonGrid[locationX][locationY].setBackground(Color.RED);
 			
 			if (sunk)
-				JOptionPane.showMessageDialog(null, "It was a SINK!!");
+				JOptionPane.showMessageDialog(null, "You sank the " + shipNames[shipID - 1]);
 			else
-				JOptionPane.showMessageDialog(null, "It was a HIT");
+				JOptionPane.showMessageDialog(null, "You hit the " + shipNames[shipID - 1]);
 		}
 
 		for (int i = 0; i < 10; i++)
