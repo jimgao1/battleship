@@ -304,12 +304,16 @@ public class BattleshipMP extends JFrame implements ActionListener, Runnable{
 	}
 	
 	public void updateScoreBoard(){
+		System.out.println("[INFO]\tUpdating scoreboard, playerTurn = " + this.playerTurn);
+
 		scoreBoardString = "<html>";
 		scoreBoardString += "<h1>" + (playerTurn ? "Your Turn" : "Enemy's Turn") + "</h1><br>";
 		scoreBoardString += "<b>Rounds: </b>" + this.roundCount + "<br>";
 		scoreBoardString += "Player sunk <b>" + this.playerSank + "</b> ships.<br>";
 		scoreBoardString += "Opponent sunk <b>" + this.enemySank + "</b> ships.<br>";
 		scoreBoardString += "</html>";
+		
+		System.out.println("[INFO]\tScoreboard Content: " + scoreBoardString);
 		
 		scoreBoard.setText(scoreBoardString);
 		this.repaint();
@@ -322,7 +326,10 @@ public class BattleshipMP extends JFrame implements ActionListener, Runnable{
 		
 		if (playerTurn){
 			updateScoreBoard();
+			this.getContentPane().repaint();
+			this.getContentPane().revalidate();
 			
+			JOptionPane.showMessageDialog(null, "It is YOUR TURN");
 			
 			for (int i = 0; i < 10; i++) {
 				for (int j = 0; j < 10; j++) {
@@ -343,6 +350,10 @@ public class BattleshipMP extends JFrame implements ActionListener, Runnable{
 		} else {
 			
 			updateScoreBoard();
+			this.getContentPane().repaint();
+			this.getContentPane().revalidate();
+			
+			JOptionPane.showMessageDialog(null, "It is OPPONENT'S TURN");
 			
 			if (firstRun){
 				JOptionPane.showMessageDialog(null, "Connected to server");
