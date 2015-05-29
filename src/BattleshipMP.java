@@ -44,20 +44,33 @@ public class BattleshipMP extends JFrame implements ActionListener, Runnable{
 	 * 		GUI components
 	 */
 	
+	/*
+	 * 	Array of JButton, representing the grids of the player and 
+	 * 	opponent. 
+	 */
 	public JButton[][] opponentButtonGrid = new JButton[10][10];
 	public JButton[][] playerButtonGrid = new JButton[10][10];
 
+	/*
+	 * 	The panels, which consists of the 2 grids, as well as the scoreboard
+	 */
 	public JPanel pnlPlayer = new JPanel();
 	public JPanel pnlOpponent = new JPanel();
 	public JPanel pnlControls = new JPanel();
 	public JPanel pnlHeader = new JPanel();
 
+	/*
+	 * 	The status panel, along with the scoreboard itself
+	 */
 	public JLabel lblStatus = new JLabel("");
 	public JLabel scoreBoard = new JLabel();
 
+	/*
+	 * 	The labels for where the objects are
+	 */
 	public JLabel lblLeft = new JLabel("Opponent's Grid", JLabel.CENTER);
 	public JLabel lblRight = new JLabel("Your Grid", JLabel.CENTER);
-	public JLabel lblCenter = new JLabel("Controls", JLabel.CENTER);
+	public JLabel lblCenter = new JLabel("Score Board", JLabel.CENTER);
 	
 	/*
 	 * 		Game Information
@@ -96,6 +109,13 @@ public class BattleshipMP extends JFrame implements ActionListener, Runnable{
 	
 	/*
 	 * 	Constructor as SERVER
+	 * 
+	 * 	It will create a ServerSocket and listen on the port given.
+	 * 
+	 * 	If a client connects, it creates the readers and writers, 
+	 * 	and then starts the game. 	
+	 * 
+	 * 	It will give the user an error if the connection failed. 
 	 */
 	public BattleshipMP(int port){
 		try{
@@ -123,6 +143,13 @@ public class BattleshipMP extends JFrame implements ActionListener, Runnable{
 	
 	/*
 	 * 	Constructor as CLIENT
+	 * 
+	 * 	Takes in both the IP address and the port number.
+	 * 
+	 * 	Actively connects to the server, creates the readers and writers, 
+	 * 	and then starts the game. 
+	 * 
+	 * 	If the connection failed, it will show an error. 
 	 */
 	public BattleshipMP(String serverIP, int port){
 		try{
@@ -143,6 +170,10 @@ public class BattleshipMP extends JFrame implements ActionListener, Runnable{
 		}
 	}
 	
+	/*
+	 * 	A custom method that gets the "real" IP address, rather than the first
+	 * 	one in the ip tables. 
+	 */
 	public String getIpAddress() { 
         try {
             for (Enumeration en = NetworkInterface.getNetworkInterfaces(); en.hasMoreElements();) {
@@ -161,6 +192,10 @@ public class BattleshipMP extends JFrame implements ActionListener, Runnable{
         return null; 
 	}
 	
+	/*
+	 * 	Method that initializes the graphical user interface, it 
+	 * 	builds it, and adds the action listener. 
+	 */
 	public void initGUI(){
 		this.setTitle("Battleship");
 		this.setSize(1200, 500);
@@ -184,6 +219,9 @@ public class BattleshipMP extends JFrame implements ActionListener, Runnable{
 		pnlOpponent.setLayout(new GridLayout(10, 10));
 		pnlOpponent.setPreferredSize(new Dimension(400, 400));
 
+		/*
+		 * 	Creates the left button grid (the opponent)
+		 */
 		for (int i = 0; i < 10; i++) {
 			for (int j = 0; j < 10; j++) {
 				opponentButtonGrid[i][j] = new JButton();
@@ -203,6 +241,9 @@ public class BattleshipMP extends JFrame implements ActionListener, Runnable{
 		pnlPlayer.setLayout(new GridLayout(10, 10));
 		pnlPlayer.setPreferredSize(new Dimension(400, 400));
 
+		/*
+		 * 	Creates teh right button grid (the player)
+		 */
 		for (int i = 0; i < 10; i++) {
 			for (int j = 0; j < 10; j++) {
 				playerButtonGrid[i][j] = new JButton();
@@ -229,9 +270,16 @@ public class BattleshipMP extends JFrame implements ActionListener, Runnable{
 		this.repaint();
 		this.revalidate();
 		
+		/*
+		 * 	Calls nextTurn() to start the game. 
+		 */
 		nextTurn();
 	}
 	
+	/*
+	 * 	Method that generates a random ship placement, used in testing,
+	 * 	as well as single player games. 
+	 */
 	public void generateRandomPlacement() {
 		int[][] randomGrid = new int[10][10];
 		
@@ -303,6 +351,10 @@ public class BattleshipMP extends JFrame implements ActionListener, Runnable{
 		this.revalidate();
 	}
 	
+	/*
+	 * 	Method that updates the scoreboard, repaints it,
+	 * 	to ensure that the information are displayed correctly. 
+	 */
 	public void updateScoreBoard(){
 		System.out.println("[INFO]\tUpdating scoreboard, playerTurn = " + this.playerTurn);
 
@@ -320,6 +372,13 @@ public class BattleshipMP extends JFrame implements ActionListener, Runnable{
 		this.revalidate();
 	}
 	
+	/*
+	 * 	The main "driver" method for the program. It does everything like a 
+	 * 	referee, it handles the connections, as well as giving corresponding
+	 * 	feedbacks to the other clients. 
+	 * 
+	 * 	If the connection is unreliable, it will spit out an error message. 
+	 */
 	public void nextTurn(){
 		
 		System.out.println("\n[INFO]\tNew Round Started. PlayerTurn = " + playerTurn);
@@ -428,6 +487,13 @@ public class BattleshipMP extends JFrame implements ActionListener, Runnable{
 		
 	}
 
+	/*
+	 * 	The main action listener for the class, it listens to
+	 * 	every single button in the opponentButtonGrid, and
+	 * 	sends the coordinates to the other client. 
+	 * 
+	 * 	An error will show if the connection is broken or unreliable. 
+	 */
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		
@@ -502,6 +568,9 @@ public class BattleshipMP extends JFrame implements ActionListener, Runnable{
 		nextTurn();
 	}
 
+	/*
+	 *	Not currently used. 
+	 */
 	@Override
 	public void run() {
 		// TODO Auto-generated method stub
