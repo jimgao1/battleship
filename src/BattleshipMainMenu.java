@@ -132,7 +132,8 @@ public class BattleshipMainMenu extends JFrame {
 			}
 
 		});
-
+		//
+		//jim
 		controlPanel.add(singlePlayer);
 		controlPanel.add(localMultiplayer);
 		controlPanel.add(lanMultiplayer);
