@@ -53,6 +53,7 @@ public class BattleshipMP extends JFrame implements ActionListener, Runnable{
 	public JPanel pnlHeader = new JPanel();
 
 	public JLabel lblStatus = new JLabel("");
+	public JLabel scoreBoard = new JLabel();
 
 	public JLabel lblLeft = new JLabel("Opponent's Grid", JLabel.CENTER);
 	public JLabel lblRight = new JLabel("Your Grid", JLabel.CENTER);
@@ -90,7 +91,8 @@ public class BattleshipMP extends JFrame implements ActionListener, Runnable{
 	 * 	Score board indicator
 	 */
 	
-	
+	public int roundCount = 0;
+	public String scoreBoardString = "";
 	
 	/*
 	 * 	Constructor as SERVER
@@ -214,8 +216,11 @@ public class BattleshipMP extends JFrame implements ActionListener, Runnable{
 
 		this.add(pnlPlayer, BorderLayout.EAST);
 
-		pnlControls.setLayout(new GridLayout(2, 1));
+		pnlControls.setLayout(new GridLayout(1, 1));
 		
+		scoreBoard.setFont(new Font("Courier New", Font.PLAIN, 15));
+
+		pnlControls.add(scoreBoard);
 		this.add(pnlControls, BorderLayout.CENTER);
 
 		lblStatus.setFont(new Font("Courier New", Font.BOLD, 16));
@@ -298,16 +303,26 @@ public class BattleshipMP extends JFrame implements ActionListener, Runnable{
 		this.revalidate();
 	}
 	
+	public void updateScoreBoard(){
+		scoreBoardString = "<html>";
+		scoreBoardString += "<h1>" + (playerTurn ? "Your Turn" : "Enemy's Turn") + "</h1><br>";
+		scoreBoardString += "<b>Rounds: </b>" + this.roundCount + "<br>";
+		scoreBoardString += "Player sunk <b>" + this.playerSank + "</b> ships.<br>";
+		scoreBoardString += "Opponent sunk <b>" + this.enemySank + "</b> ships.<br>";
+		scoreBoardString += "</html>";
+		
+		scoreBoard.setText(scoreBoardString);
+		this.repaint();
+		this.revalidate();
+	}
+	
 	public void nextTurn(){
-		
-		
 		
 		System.out.println("\n[INFO]\tNew Round Started. PlayerTurn = " + playerTurn);
 		
 		if (playerTurn){
-			lblStatus.setText("Your Turn");
-			this.repaint();
-			this.revalidate();
+			updateScoreBoard();
+			
 			
 			for (int i = 0; i < 10; i++) {
 				for (int j = 0; j < 10; j++) {
@@ -324,8 +339,10 @@ public class BattleshipMP extends JFrame implements ActionListener, Runnable{
 				}
 			}
 			
-			playerTurn = !playerTurn;
+			
 		} else {
+			
+			updateScoreBoard();
 			
 			if (firstRun){
 				JOptionPane.showMessageDialog(null, "Connected to server");
@@ -394,7 +411,7 @@ public class BattleshipMP extends JFrame implements ActionListener, Runnable{
 				playerButtonGrid[hitLocationX][hitLocationY].setText("");
 			}
 			
-			playerTurn = !playerTurn;
+			playerTurn = true;
 			nextTurn();
 		}
 		
@@ -469,6 +486,8 @@ public class BattleshipMP extends JFrame implements ActionListener, Runnable{
 			for (int j = 0; j < 10; j++)
 				opponentButtonGrid[i][j].setEnabled(false);
 		
+		playerTurn = false;
+		updateScoreBoard();
 		nextTurn();
 	}
 
