@@ -63,6 +63,9 @@ public class MapEditor extends JFrame implements ActionListener{
 	}
 	
 	public boolean validityCheck() {
+		if (currentPlacement != 5)
+			return false;
+		
 		int[] shipCount = new int[5];
 
 		for (int i = 0; i < 10; i++)
@@ -80,7 +83,11 @@ public class MapEditor extends JFrame implements ActionListener{
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		if (e.getActionCommand().equals("submit")){
-			
+			if (validityCheck()){
+				return;
+			} else {
+				JOptionPane.showMessageDialog(null, "Invalid Placement, try again bitch");
+			}
 		} else {
 			int locationX = Integer.parseInt(e.getActionCommand().split(" ")[0]);
 			int locationY = Integer.parseInt(e.getActionCommand().split(" ")[1]);
@@ -113,8 +120,58 @@ public class MapEditor extends JFrame implements ActionListener{
 					buttonGrid[locationX][i].setBackground(Color.LIGHT_GRAY);
 					buttonGrid[locationX][i].setText(Integer.toString(currentPlacement));
 				}
-			} else {
 				
+				int response = JOptionPane.showOptionDialog(null,
+						"Are you sure? ", "Confirmation",
+						JOptionPane.YES_NO_OPTION, JOptionPane.PLAIN_MESSAGE,
+						null, new String[] { "Yes", "No" }, "No");
+				
+				if (response == 0){
+					currentPlacement += 1;
+				} else {
+					for (int i=locationY; i<=cY; i++){
+						playerGrid[locationX][i] = 0;
+						buttonGrid[locationX][i].setBackground(new JButton().getBackground());
+						buttonGrid[locationX][i].setText("");
+					}
+				}
+			} else {
+				int cX = locationX + shipSize[currentPlacement - 1] - 1;
+				
+				if (cX >= 10){
+					JOptionPane.showMessageDialog(null, "Invalid Placement: OUT OF BOUNDS");
+					return;
+				}
+				
+				boolean visited = false;
+				for (int i = locationX; i <= cX; i++)
+					if (playerGrid[i][locationY] != 0) visited = true;
+				
+				if (visited){
+					JOptionPane.showMessageDialog(null, "Invalid Placement: OVERLAP WITH EXISTING SHIP");
+					return;
+				}
+				
+				for (int i = locationX; i <= cX; i++) {
+					playerGrid[i][locationY] = currentPlacement;
+					buttonGrid[i][locationY].setBackground(Color.LIGHT_GRAY);
+					buttonGrid[i][locationY].setText(Integer.toString(currentPlacement));
+				}
+				
+				int response = JOptionPane.showOptionDialog(null,
+						"Are you sure? ", "Confirmation",
+						JOptionPane.YES_NO_OPTION, JOptionPane.PLAIN_MESSAGE,
+						null, new String[] { "Yes", "No" }, "No");
+				
+				if (response == 0){
+					currentPlacement += 1;
+				} else {
+					for (int i=locationX; i<=cX; i++){
+						playerGrid[i][locationY] = 0;
+						buttonGrid[i][locationY].setBackground(new JButton().getBackground());
+						buttonGrid[i][locationY].setText("");
+					}
+				}
 			}
 		}
 	}
