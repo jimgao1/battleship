@@ -22,7 +22,7 @@ public class EasterEgg{
 	  
 	  public TrollThread()
 	  {
-	    setSize(301, 200);
+	    setSize(400, 200);
 	    setDefaultCloseOperation(1);
 	    setLayout(null);
 	    setLocation(randomX(), randomY());
@@ -31,6 +31,8 @@ public class EasterEgg{
 	    l.setFont(new Font("Courier New", 1, 40));
 	    l.setBounds(0, 0, 780, 180);
 	    add(l);
+	    
+	    
 	  }
 	  
 	  public void run()
@@ -41,7 +43,7 @@ public class EasterEgg{
 	
 	public EasterEgg(){
 		for (int i=0; i<windowCount; i++)
-			new TrollThread();
+			new Thread(new TrollThread()).start();
 	}
 
 }
