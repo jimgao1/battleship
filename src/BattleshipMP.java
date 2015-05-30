@@ -151,7 +151,7 @@ public class BattleshipMP extends JFrame implements ActionListener, Runnable{
 	 * 
 	 * 	If the connection failed, it will show an error. 
 	 */
-	public BattleshipMP(String serverIP, int port){
+	public BattleshipMP(String serverIP, int port, boolean singleplayer){
 		try{
 			sock = new Socket(serverIP, port);
 			

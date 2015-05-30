@@ -31,12 +31,16 @@ public class BattleshipSP{
 				System.out.println("[ERROR]\tAI Server Error: " + ex.getLocalizedMessage());
 				JOptionPane.showMessageDialog(null, ex.getLocalizedMessage());
 			}
+			
+			//TODO: Insert algorithm here
 		}
 		
 	}
 	
 	public BattleshipSP(){
+		new AIThread();
 		
+		BattleshipMP multi = new BattleshipMP("localhost", 8001, true);
 	}
 	
 }

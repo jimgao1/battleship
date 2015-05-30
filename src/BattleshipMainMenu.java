@@ -1,6 +1,4 @@
-/*
- * 	random shit
- */
+
 
 import java.awt.BorderLayout;
 import java.awt.Dimension;
@@ -110,7 +108,7 @@ public class BattleshipMainMenu extends JFrame {
 				} else {
 					String serverIP = JOptionPane.showInputDialog(null, "Please enter the server IP");
 					
-					new BattleshipMP(serverIP, 8000);
+					new BattleshipMP(serverIP, 8000, false);
 				}
 				
 				BattleshipMainMenu.this.setVisible(false);
