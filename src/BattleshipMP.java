@@ -159,7 +159,8 @@ public class BattleshipMP extends JFrame implements ActionListener, Runnable{
 			writer = new PrintWriter(sock.getOutputStream(), true);
 			
 			System.out.println("[INFO]\tConnection Established (CLIENT). IP: " + sock.getInetAddress());
-			playerTurn = false;
+			
+			playerTurn = singleplayer;
 			
 			this.initGUI();
 			this.generateRandomPlacement();
