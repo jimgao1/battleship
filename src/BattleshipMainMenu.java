@@ -1,6 +1,4 @@
-/*
- * 	random shit
- */
+
 
 import java.awt.BorderLayout;
 import java.awt.Dimension;
@@ -22,6 +20,8 @@ import javax.swing.UIManager;
 import com.jgoodies.looks.plastic.PlasticLookAndFeel;
 
 public class BattleshipMainMenu extends JFrame {
+	
+	public int tCount = 0;
 
 	public BattleshipMainMenu() {
 		/*
@@ -88,8 +88,11 @@ public class BattleshipMainMenu extends JFrame {
 
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
-				// TODO Auto-generated method stub
-
+				JOptionPane.showMessageDialog(null, "Not Implemented");
+				
+				if (tCount++ == 5){
+					new EasterEgg();
+				}
 			}
 
 		});
@@ -110,7 +113,7 @@ public class BattleshipMainMenu extends JFrame {
 				} else {
 					String serverIP = JOptionPane.showInputDialog(null, "Please enter the server IP");
 					
-					new BattleshipMP(serverIP, 8000);
+					new BattleshipMP(serverIP, 8000, false);
 				}
 				
 				BattleshipMainMenu.this.setVisible(false);
