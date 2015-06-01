@@ -30,6 +30,11 @@ public class BattleshipMP extends JFrame implements ActionListener, Runnable{
 		"Destroyer", "Submarine", "Cruiser", "Battleship", "Carrier"
 	};
 	
+	public static final String[] outcomes = {
+	    "Miss", "Hit", "Sank" 
+	};
+	
+	
 	/*
 	 * 		TCP/IP stuff
 	 */
@@ -93,6 +98,7 @@ public class BattleshipMP extends JFrame implements ActionListener, Runnable{
 	public boolean playerTurn;
 	
 	public boolean firstRun = true;
+	public boolean singlePlayer = false;
 	
 	/*
 	 * 	Win/Lose indicator
@@ -161,6 +167,7 @@ public class BattleshipMP extends JFrame implements ActionListener, Runnable{
 			System.out.println("[INFO]\tConnection Established (CLIENT). IP: " + sock.getInetAddress());
 			
 			playerTurn = singleplayer;
+			this.singlePlayer = singleplayer;
 			
 			this.initGUI();
 			this.generateRandomPlacement();
@@ -294,7 +301,7 @@ public class BattleshipMP extends JFrame implements ActionListener, Runnable{
 			boolean valid = true;
 
 			if (vert) {
-				if (pY + AlgorithmMain.shipSize[i][0] - 1 < 10) {
+ 				if (pY + AlgorithmMain.shipSize[i][0] - 1 < 10) {
 					for (int j = pY; j < pY + AlgorithmMain.shipSize[i][0]; j++)
 						if (randomGrid[pX][j] != 0) {
 							valid = false;
@@ -441,45 +448,79 @@ public class BattleshipMP extends JFrame implements ActionListener, Runnable{
 			int hitLocationX = Integer.parseInt(cmd.split(" ")[0]);
 			int hitLocationY = Integer.parseInt(cmd.split(" ")[1]);			
 			
-			System.out.println("[INFO]\thitLocationX = " + hitLocationX + ", hitLocationY = " + hitLocationY);
-			
-			if (playerGrid[hitLocationX][hitLocationY] == 0){
-				writer.println("miss");
-				writer.flush();
-				System.out.println("[INFO]\tEnemy Missed");
-				playerButtonGrid[hitLocationX][hitLocationY].setIcon(new ImageIcon("water.png"));
-				playerButtonGrid[hitLocationX][hitLocationY].setText("");
-			} else {
-				writer.println(Integer.toString(playerGrid[hitLocationX][hitLocationY]));
-				writer.flush();
-				System.out.println("[INFO]\tEnemy Hit");
+			if (!singlePlayer){
+				System.out.println("[INFO]\thitLocationX = " + hitLocationX + ", hitLocationY = " + hitLocationY);
 				
-				
-				int shipID = playerGrid[hitLocationX][hitLocationY];
-				int shipCount = 0;
-
-				for (int i = 0; i < 10; i++)
-					for (int j = 0; j < 10; j++)
-						if (playerGrid[i][j] == shipID)
-							shipCount++;
-				
-				if (shipCount == 1){
-					writer.println("true");
-					System.out.println("[INFO]\tThe ship was sank.");
-					enemySank += 1;
-					if (enemySank >= 5){
-						System.out.println("[INFO]\tYou have lost the game. ");
-						JOptionPane.showMessageDialog(null, "You have lost the game.");
-						this.dispose();
-					}
+				if (playerGrid[hitLocationX][hitLocationY] == 0){
+					writer.println("miss");
+					writer.flush();
+					System.out.println("[INFO]\tEnemy Missed");
+					playerButtonGrid[hitLocationX][hitLocationY].setIcon(new ImageIcon("water.png"));
+					playerButtonGrid[hitLocationX][hitLocationY].setText("");
 				} else {
-					writer.println("false");
+					writer.println(Integer.toString(playerGrid[hitLocationX][hitLocationY]));
+					writer.flush();
+					System.out.println("[INFO]\tEnemy Hit");
+					
+					
+					int shipID = playerGrid[hitLocationX][hitLocationY];
+					int shipCount = 0;
+	
+					for (int i = 0; i < 10; i++)
+						for (int j = 0; j < 10; j++)
+							if (playerGrid[i][j] == shipID)
+								shipCount++;
+					
+					if (shipCount == 1){
+						writer.println("true");
+						System.out.println("[INFO]\tThe ship was sank.");
+						enemySank += 1;
+						if (enemySank >= 5){
+							System.out.println("[INFO]\tYou have lost the game. ");
+							JOptionPane.showMessageDialog(null, "You have lost the game.");
+							this.dispose();
+						}
+					} else {
+						writer.println("false");
+					}
+					
+					playerGrid[hitLocationX][hitLocationY] = -1;
+					
+					playerButtonGrid[hitLocationX][hitLocationY].setIcon(new ImageIcon("fire.png"));
+					playerButtonGrid[hitLocationX][hitLocationY].setText("");
 				}
+			} else {
+				String msg = "<html><b>LocationX: </b>" + hitLocationX + "</b><br>" + 
+						"<b>LocationY: </b>" + hitLocationY + "</html>";
+			
+				JOptionPane.showMessageDialog(null, msg);
 				
-				playerGrid[hitLocationX][hitLocationY] = -1;
+				String s = (String) JOptionPane.showInputDialog(null,
+						"What is the result? ", "",
+						JOptionPane.QUESTION_MESSAGE, null,
+						outcomes, "");
 				
-				playerButtonGrid[hitLocationX][hitLocationY].setIcon(new ImageIcon("fire.png"));
-				playerButtonGrid[hitLocationX][hitLocationY].setText("");
+				if (s.equalsIgnoreCase("miss")){
+					writer.println("miss");
+				} else {
+					
+					
+					String shipHit = (String) JOptionPane.showInputDialog(null,
+							"Which ship is hit?", "",
+							JOptionPane.QUESTION_MESSAGE, null,
+							shipNames, "");
+					
+					int shipID = -1;
+					for (int i=0; i<5; i++)
+						if (shipNames[i].equals(shipHit)) shipID = i;
+					
+					writer.println(shipID);
+					
+					if (s.equalsIgnoreCase("hit"))
+						writer.println("false");
+					else
+						writer.println("true");
+				}
 			}
 			
 			playerTurn = true;

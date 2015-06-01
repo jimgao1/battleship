@@ -1,4 +1,3 @@
-import java.awt.Color;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
@@ -147,7 +146,7 @@ public class BattleshipSP {
 						if (killModeEngaged) {
 							System.out
 									.println("[INFO]\t***KILL MODE ENGAGED***");
-
+							String s=(String)JOptionPane.showInputDialog(null,"Which ship is sank?","",JOptionPane.QUESTION_MESSAGE,null,outcomes,"");
 							KillAlgorithm.recalculate();
 
 							double maxProb = -1.0D;
