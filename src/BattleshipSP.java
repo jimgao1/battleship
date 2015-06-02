@@ -34,7 +34,7 @@ public class BattleshipSP {
 		 */
 
 		public static int[][] gridState = new int[gridSizeX][gridSizeY];
-		public static double[][] gridProbability = new double[gridSizeX][gridSizeY];
+		public static int[][] gridProbability = new int[gridSizeX][gridSizeY];
 
 		public static boolean[] shipSank = new boolean[shipCount];
 		public static boolean[] shipHit = new boolean[shipCount];
@@ -152,8 +152,7 @@ public class BattleshipSP {
 							double maxProb = -1.0D;
 							for (int i = 0; i < 10; i++) {
 								for (int j = 0; j < 10; j++) {
-									if ((gridProbability[i][j] > maxProb)
-											&& (gridState[i][j] == 0)) {
+									if ((gridProbability[i][j] > maxProb) && (gridState[i][j] == 0)) {
 										maxProb = gridProbability[i][j];
 										maxLocationX = i;
 										maxLocationY = j;
@@ -170,6 +169,8 @@ public class BattleshipSP {
 							writer.println(maxLocationX + " " + maxLocationY);
 						} else {
 							HuntAlgorithm.recalculate();
+							
+							this.gridProbability = HuntAlgorithm.huntProb;
 
 							double maxProb = -1.0D;
 							for (int i = 0; i < 10; i++) {
