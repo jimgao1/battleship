@@ -144,10 +144,11 @@ public class BattleshipSP {
 						int maxLocationX = -1;
 						int maxLocationY = -1;
 						if (killModeEngaged) {
-							System.out
-									.println("[INFO]\t***KILL MODE ENGAGED***");
+							System.out.println("[INFO]\t***KILL MODE ENGAGED***");
 							String s=(String)JOptionPane.showInputDialog(null,"Which ship is sank?","",JOptionPane.QUESTION_MESSAGE,null,outcomes,"");
 							KillAlgorithm.recalculate();
+							
+							this.gridProbability = KillAlgorithm.gridProb;
 
 							double maxProb = -1.0D;
 							for (int i = 0; i < 10; i++) {
