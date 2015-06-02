@@ -31,8 +31,20 @@ public class AlgorithmMain extends JFrame implements ActionListener{
 	/*
 	 * The game rules, displayed when the game starts
 	 */
-	public static final String rules = "Welcome to Battleship!\r\nHere are the rules of the single player mode game:\r\nYou should place your ships into your 10 by 10 grid; ships cannot be out of bounce.\r\nThere are 5 ships that should be place, there are the Carrier (length of 5), the Battleship (length of 4), the Submarine (length of 3), the Cruiser (length of 3), and the Destroyer (length of 2).\r\nThen you can enter the coordinates of the location you want to hit in your opponent\u2019s grid, our program would tell you if it is a miss or a hit/sank of a ship. \r\nThe player that first sinks all five of ships of his opponent will take the victory.\r\n\r\nHere are the rules of the multiplayer/LAN mode:\r\nConnect the local network using client and server mode.\r\nYou should place your ships into your 10 by 10 grid; ships cannot be out of bounce.\r\nThere are 5 ships that should be place, there are the Carrier (length of 5), the Battleship (length of 4), the Submarine (length of 3), the Cruiser (length of 3), and the Destroyer (length of 2).\r\nThen you can enter the coordinates of the location you want to hit in your opponent\u2019s grid, our program would tell you if it is a miss or a hit/sank of a ship. \r\nThe player that first sinks all five of ships of his opponent will take the victory.\r\n";
-	
+	public static final String rules = "Welcome to Battleship!\r\nHere are the rules of the single player mode game:" + ""
+			+ "\r\nYou should place your ships into your 10 by 10 grid; ships cannot be out of bounds.\r\nThere are 5 ships"
+			+ " that should be placed, there are the Carrier (length of 5), the Battleship (length of 4), the Submarine "
+			+ "(length of 3), the Cruiser (length of 3), and the Destroyer (length of 2).\r\nThen you can enter the "
+			+ "coordinates of the location you want to hit in your opponent\u2019s grid, our program would tell you if it is "
+			+ "a miss or a hit/sank of a ship. \r\nThe player that first sinks all five of ships of his opponent will take the "
+			+ "victory.\r\n\r\nHere are the rules of the multiplayer/LAN mode:\r\nConnect the local network using client and "
+			+ "server mode.\r\nYou should place your ships into your 10 by 10 grid; ships cannot be out of bounce.\r\n"
+			+ "There are 5 ships that should be placed, there are the Carrier (length of 5), the Battleship (length of 4), "
+			+ "the Submarine (length of 3), the Cruiser (length of 3), and the Destroyer (length of 2).\r\nThen you can "
+			+ "enter the coordinates of the location you want to hit in your opponent\u2019s grid, our program would tell "
+			+ "you if it is a miss or a hit/sank of a ship. \r\nThe player that first sinks all five of ships of his opponent "
+			+ "will take the victory.\r\n";
+
 	/*
 	 * Algorithm Configuration
 	 */
@@ -461,9 +473,17 @@ public class AlgorithmMain extends JFrame implements ActionListener{
 			gridState[maxLocationX][maxLocationY] = 3;
 		}
 		
+		/*
+		 * 	Re-enable the buttons, except those have been hit, and missed
+		 */
 		for (int i=0; i<10; i++)
 			for (int j=0; j<10; j++)
-				buttonGrid[i][j].setEnabled(true);
+				if (buttonGrid[i][j].getBackground() == Color.BLUE ||
+						buttonGrid[i][j].getBackground() == Color.RED){
+					buttonGrid[i][j].setEnabled(false);
+				} else {
+					buttonGrid[i][j].setEnabled(true);
+				}
 	}
 
 
