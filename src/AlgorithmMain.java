@@ -54,6 +54,7 @@ public class AlgorithmMain extends JFrame implements ActionListener{
 	public static int playerHit = 0, playerSank = 0;
 	public static int computerHit = 0, computerSank = 0;
 
+
 	/*
 	 * 0 for default 1 for hit 2 for sank
 	 */
