@@ -148,7 +148,7 @@ public class BattleshipSP {
 							String s=(String)JOptionPane.showInputDialog(null,"Which ship is sank?","",JOptionPane.QUESTION_MESSAGE,null,outcomes,"");
 							KillAlgorithm.recalculate();
 							
-							this.gridProbability = KillAlgorithm.gridProb;
+							
 
 							double maxProb = -1.0D;
 							for (int i = 0; i < 10; i++) {
@@ -171,7 +171,7 @@ public class BattleshipSP {
 						} else {
 							HuntAlgorithm.recalculate();
 							
-							this.gridProbability = HuntAlgorithm.huntProb;
+							
 
 							double maxProb = -1.0D;
 							for (int i = 0; i < 10; i++) {

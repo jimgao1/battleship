@@ -12,8 +12,6 @@ public class KillAlgorithm {
 	 */
 	public static int[][] killGrid;
 	
-	public static int[][] gridProb;
-	
 	public static void init(){
 		killGrid = new int[AlgorithmMain.gridSizeX][AlgorithmMain.gridSizeY];
 	}
@@ -22,7 +20,7 @@ public class KillAlgorithm {
 		
 		KillAlgorithm.killGrid = (int[][])AlgorithmMain.gridState.clone();
 		
-		int[][] prob = new int[AlgorithmMain.gridSizeX][AlgorithmMain.gridSizeY];
+		double[][] prob = new double[AlgorithmMain.gridSizeX][AlgorithmMain.gridSizeY];
 		
 		for (int i = 0; i < AlgorithmMain.gridSizeX; i++)
 			for (int j = 0; j < AlgorithmMain.gridSizeY; j++)
@@ -54,7 +52,7 @@ public class KillAlgorithm {
 						if (!hitIncluded || missIncluded) continue;
 						
 						for (int i = cX; i <= lX; i++)
-							prob[i][cY] +=1 ;
+							prob[i][cY] += 1;
 					}
 				}
 				
@@ -89,12 +87,12 @@ public class KillAlgorithm {
 			
 		}
 		
-		gridProb = prob;
+		AlgorithmMain.gridProbability = prob;
 		
 		System.out.println("[DEBUG]\tGrid Probability Updated");
 		for (int i = 0; i < AlgorithmMain.gridSizeY; i++){
 			for (int j = 0; j < AlgorithmMain.gridSizeX; j++)
-				System.out.printf("%d[%d]\t", (int)AlgorithmMain.gridProbability[j][i], AlgorithmMain.gridState[j][i]);
+				System.out.printf("%d\t", (int)AlgorithmMain.gridProbability[j][i]);
 			System.out.println();
 		}
 		

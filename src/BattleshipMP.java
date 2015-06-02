@@ -73,7 +73,7 @@ public class BattleshipMP extends JFrame implements ActionListener, Runnable{
 	/*
 	 * 	The labels for where the objects are
 	 */
-	public JLabel lblLeft = new JLabel("Opponent's Grid", JLabel.CENTER);
+	public JLabel lblLeft = new JLabel("Opponent Grid", JLabel.CENTER);
 	public JLabel lblRight = new JLabel("Your Grid", JLabel.CENTER);
 	public JLabel lblCenter = new JLabel("Score Board", JLabel.CENTER);
 	

@@ -1,3 +1,8 @@
+/*
+ * 	[BattleshipMainMenu.java]
+ * 
+ * 	Author: Philip Huang, Jim Gao, Joseph Zhang
+ */
 
 
 import java.awt.BorderLayout;
@@ -79,7 +84,7 @@ public class BattleshipMainMenu extends JFrame {
 
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
-				new BattleshipSP();
+				new AlgorithmMain();
 			}
 
 		});
