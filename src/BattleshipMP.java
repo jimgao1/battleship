@@ -396,7 +396,8 @@ public class BattleshipMP extends JFrame implements ActionListener, Runnable{
 			this.getContentPane().repaint();
 			this.getContentPane().revalidate();
 			
-			JOptionPane.showMessageDialog(null, "It is YOUR TURN");
+			if (!this.singlePlayer) 
+				JOptionPane.showMessageDialog(null, "It is YOUR TURN");
 			
 			for (int i = 0; i < 10; i++) {
 				for (int j = 0; j < 10; j++) {
@@ -420,9 +421,10 @@ public class BattleshipMP extends JFrame implements ActionListener, Runnable{
 			this.getContentPane().repaint();
 			this.getContentPane().revalidate();
 			
-			JOptionPane.showMessageDialog(null, "It is OPPONENT'S TURN");
+			if (!this.singlePlayer)
+				JOptionPane.showMessageDialog(null, "It is OPPONENT'S TURN");
 			
-			if (firstRun){
+			if (firstRun && !this.singlePlayer){
 				JOptionPane.showMessageDialog(null, "Connected to server");
 				firstRun = false;
 			}
