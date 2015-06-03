@@ -72,12 +72,19 @@ public class AlgorithmMain extends JFrame implements ActionListener{
 	public static final String[] shipNames = { "Destroyer", "Submarine",
 			"Cruiser", "Battleship", "Carrier" };
 	
+	/*
+	 * Game Variables
+	 */
+	
 	public static ArrayList<String> activeShipNames = new ArrayList<String>();
 
 	public static int[] shipState = new int[5];
 
 	public static int playerHit = 0, playerSank = 0;
 	public static int computerHit = 0, computerSank = 0;
+	
+	public static int leastProbableCounter = 1;
+	
 
 
 	/*
@@ -440,6 +447,15 @@ public class AlgorithmMain extends JFrame implements ActionListener{
 					+ (maxLocationX + 1) + ", " + (maxLocationY + 1) + ") ");
 		} else {
 			HuntAlgorithm.recalculate();
+			
+			if ((leastProbableCounter ++) % 5 == 0){
+				for (int i=0; i<10; i++)
+					for (int j=0; j<10; j++)
+						if (gridProbability[i][j] == 0)
+							gridProbability[i][j] = Integer.MIN_VALUE;
+						else
+							gridProbability[i][j] = -1 * gridProbability[i][j];
+			}
 
 			double maxProb = -1.0D;
 			for (int i = 0; i < 10; i++) {
