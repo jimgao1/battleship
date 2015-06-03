@@ -6,6 +6,8 @@
 
 import java.awt.BorderLayout;
 import java.awt.Color;
+import java.awt.Dimension;
+import java.awt.Font;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -44,6 +46,14 @@ public class AlgorithmMain extends JFrame implements ActionListener{
 			+ "enter the coordinates of the location you want to hit in your opponent\u2019s grid, our program would tell "
 			+ "you if it is a miss or a hit/sank of a ship. \r\nThe player that first sinks all five of ships of his opponent "
 			+ "will take the victory.\r\n";
+	
+	public static final String bannerBattleship = "  ____        _   _   _           _     _       \r\n |  _ \\      | | | | | | "
+			+ "        | |   (_)      \r\n | |_) | __ _| |_| |_| | ___  ___| |__  _ _ __  \r\n |  _ < / _` | __| __| |/ _ \\/ __| \'"
+			+ "_ \\| | \'_ \\ \r\n | |_) | (_| | |_| |_| |  __/\\__ \\ | | | | |_) |\r\n |____/ \\__,_|\\__|\\__|_|\\___||___/_| |_|"
+			+ "_| .__/ \r\n                                         | |    \r\n                                         |_|    ";
+	
+	public static final String bannerTeamNull = "01010100 01100101 01100001 01101101 00100000 01001110 01010101 01001100 01001100";
+	
 
 	/*
 	 * Algorithm Configuration
@@ -105,7 +115,7 @@ public class AlgorithmMain extends JFrame implements ActionListener{
 	public static JPanel controlPanel = new JPanel();
 	public static JPanel sidePanel = new JPanel();
 	
-	public static JLabel statusLabel = new JLabel();
+	public static JLabel statusLabel = new JLabel("");
 	
 	public static JButton startGame = new JButton("Start Game");
 	public static JButton endGame = new JButton("End Game");
@@ -122,12 +132,26 @@ public class AlgorithmMain extends JFrame implements ActionListener{
 			
 			PrintWriter writer = new PrintWriter(new FileWriter(new File(fileName + ".txt")));
 			
+			writer.println(bannerBattleship);
+			writer.println("\n");
+			writer.println(bannerTeamNull);
+			
 			writer.println("Computer Grid Placement: ");
 			for (int i=0; i<10; i++){
 				for (int j=0; j<10; j++)
 					writer.print(computerGrid[j][i] + "  ");
 				writer.print("\r\n");
 			}
+			
+			String message = "\r\nGame Statistics: ";
+			
+			message += "Computer made " + computerHit + " shots.\r\n";
+			message += "Computer sank " + computerSank + " ships.\r\n";
+			
+			message += "You made " + playerHit + " shots.\r\n";
+			message += "You sank " + playerSank + " ships.\r\n";
+			
+			writer.println(message);
 			
 			writer.close();
 			
@@ -207,7 +231,7 @@ public class AlgorithmMain extends JFrame implements ActionListener{
 	 */
 	public AlgorithmMain(){
 		this.setLocation(100, 100);
-		this.setSize(600, 400);
+		this.setSize(650, 500);
 		this.setLayout(new BorderLayout());
 		this.setTitle("Battleship Singleplayer");
 		this.setVisible(true);
@@ -220,12 +244,15 @@ public class AlgorithmMain extends JFrame implements ActionListener{
 		}
 		
 		gridPanel.setLayout(new GridLayout(10, 10));
+		gridPanel.setPreferredSize(new Dimension(400, 400));
+		
 		for (int i=0; i<10; i++){
 			for (int j=0; j<10; j++){
 				buttonGrid[i][j] = new JButton();
 				buttonGrid[i][j].setActionCommand(i + " " + j);
 				buttonGrid[i][j].addActionListener(this);
 				buttonGrid[i][j].setEnabled(false);
+				buttonGrid[i][j].setPreferredSize(new Dimension(40, 40));
 				gridPanel.add(buttonGrid[i][j]);
 			}
 		}
@@ -237,6 +264,7 @@ public class AlgorithmMain extends JFrame implements ActionListener{
 		 */
 		
 		sidePanel.setLayout(new GridLayout(2, 1));
+		sidePanel.setPreferredSize(new Dimension(150, 400));
 		
 		controlPanel.setLayout(new GridLayout(3, 1));
 		
@@ -245,17 +273,21 @@ public class AlgorithmMain extends JFrame implements ActionListener{
 		
 		endGame.addActionListener(this);
 		endGame.setActionCommand("end");
+		endGame.setEnabled(false);
 		
 		restartGame.addActionListener(this);
 		restartGame.setActionCommand("restart");
-		
+		restartGame.setEnabled(false);
 		
 		controlPanel.add(startGame);
 		controlPanel.add(endGame);
 		controlPanel.add(restartGame);
 		
+		statusLabel.setFont(new Font("Times New Roman", Font.PLAIN, 14));
+		
 		statusPanel.setLayout(new GridLayout(1, 1));
 		statusPanel.add(statusLabel);
+		
 		sidePanel.add(statusPanel);
 		sidePanel.add(controlPanel);
 	
@@ -358,6 +390,15 @@ public class AlgorithmMain extends JFrame implements ActionListener{
 		if (counter >= 50){
 			endGame();
 		}
+		
+		/*
+		 * Update the game status label
+		 */
+		
+		String status = "<html><h2>Single Player</h2><br><h3>Round #" + (counter + 1) + "</h3></html>";
+		statusLabel.setText(status);
+		
+		
 		int maxLocationX = -1;
 		int maxLocationY = -1;
 		if (killModeEngaged) {
@@ -503,13 +544,16 @@ public class AlgorithmMain extends JFrame implements ActionListener{
 					buttonGrid[i][j].setEnabled(true);
 				}
 			}
+			
+			endGame.setEnabled(true);
+			restartGame.setEnabled(true);
 			return;
 		} else if (e.getActionCommand().equals("end")) {
 			endGame();
 			return;
 		} else if (e.getActionCommand().equals("restart")) {
-			endGame();
-			
+			new AlgorithmMain();
+			this.dispose();
 			return;
 		}
 		int gridX = Integer.parseInt(e.getActionCommand().split(" ")[0]);
