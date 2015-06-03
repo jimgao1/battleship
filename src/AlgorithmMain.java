@@ -52,7 +52,7 @@ public class AlgorithmMain extends JFrame implements ActionListener{
 			+ "_ \\| | \'_ \\ \r\n | |_) | (_| | |_| |_| |  __/\\__ \\ | | | | |_) |\r\n |____/ \\__,_|\\__|\\__|_|\\___||___/_| |_|"
 			+ "_| .__/ \r\n                                         | |    \r\n                                         |_|    ";
 	
-	public static final String bannerTeamNull = "01010100 01100101 01100001 01101101 00100000 01001110 01010101 01001100 01001100";
+	public static final String bannerTeamNull = "01010100 01100101 01100001 01101101 00100000 01001110 01010101 01001100 01001100\r\n\r\n\r\n";
 	
 
 	/*
@@ -155,8 +155,10 @@ public class AlgorithmMain extends JFrame implements ActionListener{
 			
 			writer.close();
 			
-		} catch (IOException ex){
+			JOptionPane.showMessageDialog(null, "Game log written to file: " + fileName + ".txt");
 			
+		} catch (IOException ex){
+			JOptionPane.showMessageDialog(null, "File writing unsuccessful: " + ex.getLocalizedMessage());
 		}
 	}
 	
