@@ -29,6 +29,16 @@ import com.jgoodies.looks.plastic.PlasticLookAndFeel;
 public class BattleshipMainMenu extends JFrame {
 
 	private static final long serialVersionUID = 2643227752180400125L;
+	
+	public static final String[] easterEggMessages = {
+		"This feature is not implemented",
+		"Seriously, it is not implemented",
+		"Dude! No!!!",
+		"There is nothing here, give up already.",
+		"STOP PRESSING ME!!!!",
+		"That's it. "
+	};
+	
 	/*
 	 * 	Secret counter for the easter egg, where when the user press on the 
 	 * 	not implemented feature 5 times, there will be a surprise
@@ -124,8 +134,7 @@ public class BattleshipMainMenu extends JFrame {
 
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
-				JOptionPane.showMessageDialog(null, "Not Implemented");
-				
+				JOptionPane.showMessageDialog(null, easterEggMessages[tCount]);
 				/*
 				 * 	Uses the tCount at the beginning of the code, pops up
 				 * 	easter egg when pressed 5 times
