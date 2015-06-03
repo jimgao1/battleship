@@ -391,6 +391,10 @@ public class AlgorithmMain extends JFrame implements ActionListener{
 			endGame();
 		}
 		
+		if (playerSank >= 5 || computerSank >= 5){
+			endGame();
+		}
+		
 		/*
 		 * Update the game status label
 		 */
