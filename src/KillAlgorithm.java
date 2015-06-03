@@ -7,9 +7,6 @@
  * 			location around the existing hits
  */
 
-import java.util.LinkedList;
-import java.util.Queue;
-
 public class KillAlgorithm {
 	
 	/*

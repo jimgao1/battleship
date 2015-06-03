@@ -7,7 +7,6 @@
 
 import javax.swing.JFrame;
 import java.awt.Font;
-import javax.swing.JFrame;
 import javax.swing.JLabel;
 
 public class EasterEgg {
@@ -21,6 +20,9 @@ public class EasterEgg {
 	 * 	Thread to pop up window saying "TEAM NULL FTW"
 	 */
 	public static class TrollThread extends JFrame implements Runnable {
+		
+		private static final long serialVersionUID = 750593413758163897L;
+
 		public int randomX() {
 			return (int) (Math.random() * 1920.0D) + 1;
 		}

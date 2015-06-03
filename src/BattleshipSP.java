@@ -33,6 +33,8 @@ import com.jgoodies.looks.plastic.PlasticLookAndFeel;
 
 public class BattleshipSP extends JFrame implements ActionListener{
 
+	private static final long serialVersionUID = 1L;
+
 	/*
 	 * The game rules, displayed when the game starts
 	 */

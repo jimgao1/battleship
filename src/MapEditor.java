@@ -19,6 +19,9 @@ import javax.swing.JPanel;
 
 
 public class MapEditor extends JFrame implements ActionListener{
+
+	private static final long serialVersionUID = 1L;
+	
 	
 	public static final int[] shipSize = {2, 3, 3, 4, 5};
 	public static final String[] shipNames = {

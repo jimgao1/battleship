@@ -34,6 +34,8 @@ import javax.swing.JPanel;
 
 public class BattleshipMP extends JFrame implements ActionListener, Runnable{
 
+	private static final long serialVersionUID = 1L;
+
 	public static final String[] shipNames = {
 		"Destroyer", "Submarine", "Cruiser", "Battleship", "Carrier"
 	};

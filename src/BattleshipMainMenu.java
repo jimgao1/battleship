@@ -27,7 +27,8 @@ import javax.swing.UIManager;
 import com.jgoodies.looks.plastic.PlasticLookAndFeel;
 
 public class BattleshipMainMenu extends JFrame {
-	
+
+	private static final long serialVersionUID = 2643227752180400125L;
 	/*
 	 * 	Secret counter for the easter egg, where when the user press on the 
 	 * 	not implemented feature 5 times, there will be a surprise
