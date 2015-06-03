@@ -444,8 +444,15 @@ public class AlgorithmMain extends JFrame implements ActionListener{
 			JOptionPane.showMessageDialog(null, "Suggested Location ("
 					+ (maxLocationX + 1) + ", " + (maxLocationY + 1) + ") ");
 		}
-		String s = (String) JOptionPane.showInputDialog(null,
-				"What is the result? ", "", 3, null, outcomes, "");
+		int outcome = JOptionPane.showOptionDialog(null, "HIT or MISS",
+				"Outcome",
+				JOptionPane.YES_OPTION,
+				JOptionPane.PLAIN_MESSAGE,
+				null,
+				outcomes,
+				outcomes[0]);
+		
+		String s = outcomes[outcome];
 		if (killModeEngaged) {
 			if (s.equals("Sank")) {
 				gridState[maxLocationX][maxLocationY] = 1;
@@ -460,9 +467,13 @@ public class AlgorithmMain extends JFrame implements ActionListener{
 				computerSank ++;
 				computerHit++;
 
-				String ship = (String) JOptionPane.showInputDialog(null,
-						"Which ship is sank?", "",
-						JOptionPane.QUESTION_MESSAGE, null, shipNames, "");
+				String ship;
+				
+				do{
+					ship = (String) JOptionPane.showInputDialog(null,
+							"Which ship is hit?", "", JOptionPane.QUESTION_MESSAGE,
+						null, shipNames, "");
+				} while(ship == null);
 
 				int shipID = -1;
 				for (int i = 0; i < 5; i++)
@@ -477,9 +488,15 @@ public class AlgorithmMain extends JFrame implements ActionListener{
 						killModeEngaged = true;
 			} else if (s.equals("Hit")) {
 				gridState[maxLocationX][maxLocationY] = 1;
-				String ship = (String) JOptionPane.showInputDialog(null,
-						"Which ship is hit?", "", JOptionPane.QUESTION_MESSAGE,
+				String ship;
+				
+				do{
+					ship = (String) JOptionPane.showInputDialog(null,
+							"Which ship is hit?", "", JOptionPane.QUESTION_MESSAGE,
 						null, shipNames, "");
+				} while(ship == null);
+				
+				
 				int shipID = -1;
 				for (int i = 0; i < 5; i++)
 					if (shipNames[i].equals(ship))
@@ -504,9 +521,14 @@ public class AlgorithmMain extends JFrame implements ActionListener{
 			
 			computerHit++;
 			gridState[maxLocationX][maxLocationY] = 1;
-			String ship = (String) JOptionPane.showInputDialog(null,
-					"Which ship is hit?", "", JOptionPane.QUESTION_MESSAGE,
+			String ship;
+			
+			do{
+				ship = (String) JOptionPane.showInputDialog(null,
+						"Which ship is hit?", "", JOptionPane.QUESTION_MESSAGE,
 					null, shipNames, "");
+			} while(ship == null);
+			
 			int shipID = -1;
 			for (int i = 0; i < 5; i++)
 				if (shipNames[i].equals(ship))
@@ -551,6 +573,7 @@ public class AlgorithmMain extends JFrame implements ActionListener{
 			
 			endGame.setEnabled(true);
 			restartGame.setEnabled(true);
+			startGame.setEnabled(false);
 			return;
 		} else if (e.getActionCommand().equals("end")) {
 			endGame();
