@@ -175,6 +175,7 @@ public class BattleshipSP extends JFrame implements ActionListener{
 			
 			if (preGame){
 				writer.close();
+				JOptionPane.showMessageDialog(null, "Grid placement written to file " + fileName + ".txt");
 				return;
 			}
 			
