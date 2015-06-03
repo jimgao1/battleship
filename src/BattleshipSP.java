@@ -1,5 +1,5 @@
 /*
- * 	[AlgorithmMain.java]
+ * 	[BattleshipSP.java]
  * 
  * 	Author: Philip Huang, Jim Gao, Joseph Zhang
  * 	Purpose: The single player module of the code, allows a player to
