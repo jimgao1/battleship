@@ -1,7 +1,9 @@
 /*
  * 	[BattleshipMainMenu.java]
  * 
- * 	Author: Philip Huang, Jim Gao, Joseph Zhang
+ * 	Author: Philip Huang, JimGao, Joseph Zhang
+ * 	Purpose: The launcher of the various modes, also the 
+ * 			entry point of the program
  */
 
 
@@ -26,6 +28,10 @@ import com.jgoodies.looks.plastic.PlasticLookAndFeel;
 
 public class BattleshipMainMenu extends JFrame {
 	
+	/*
+	 * 	Secret counter for the easter egg, where when the user press on the 
+	 * 	not implemented feature 5 times, there will be a surprise
+	 */
 	public int tCount = 0;
 
 	public BattleshipMainMenu() {
@@ -48,14 +54,25 @@ public class BattleshipMainMenu extends JFrame {
 		int y = (int) ((dimension.getHeight() - this.getHeight()) / 2);
 		this.setLocation(x, y);
 
+		/*
+		 * 	Using the third party GUI look and feel, looks much better than the
+		 * 	Java metal look and feel
+		 */
 		try {
 			UIManager.setLookAndFeel(new PlasticLookAndFeel());
 		} catch (Exception ex) {
 			ex.printStackTrace();
 		}
 
+		/*
+		 * 	Constructing title bar
+		 */
 		JLabel titleLabel = new JLabel("Battleship");
 		titleLabel.setFont(new Font("Times New Roman", Font.BOLD, 55));
+		
+		/*
+		 * 	Removes the window border
+		 */
 		titleLabel.setHorizontalAlignment(SwingConstants.CENTER);
 		titleLabel.setVerticalAlignment(SwingConstants.CENTER);
 
@@ -64,6 +81,9 @@ public class BattleshipMainMenu extends JFrame {
 		JPanel controlPanel = new JPanel();
 		controlPanel.setLayout(new GridLayout(5, 1));
 
+		/*
+		 * 	The buttons on the main panel
+		 */
 		JButton singlePlayer = new JButton("Single Player");
 		JButton localMultiplayer = new JButton("Local Multiplayer");
 		JButton lanMultiplayer = new JButton("LAN Multiplayer");
@@ -80,6 +100,9 @@ public class BattleshipMainMenu extends JFrame {
 		 * 	ActionListeners
 		 */
 		
+		/*
+		 * Single Player, where a player is playing the AI.
+		 */
 		singlePlayer.addActionListener(new ActionListener() {
 
 			@Override
@@ -89,12 +112,20 @@ public class BattleshipMainMenu extends JFrame {
 
 		});
 
+		/*
+		 * 	This feature is not implemented, will implement in 
+		 * 	next version or so. 
+		 */
 		localMultiplayer.addActionListener(new ActionListener() {
 
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
 				JOptionPane.showMessageDialog(null, "Not Implemented");
 				
+				/*
+				 * 	Uses the tCount at the beginning of the code, pops up
+				 * 	easter egg when pressed 5 times
+				 */
 				if (tCount++ == 5){
 					new EasterEgg();
 				}
@@ -102,10 +133,18 @@ public class BattleshipMainMenu extends JFrame {
 
 		});
 
+		/*
+		 * 	Allows 2 people to play on a LAN
+		 */
 		lanMultiplayer.addActionListener(new ActionListener() {
 
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
+				/*
+				 * 	Letting the user choose whether they want to host a server, 
+				 * 	or join someone else's game
+				 */
+				
 				String[] modes = {"Client Mode", "Server Mode"};
 				
 				int option = JOptionPane.showOptionDialog(null,
@@ -113,9 +152,17 @@ public class BattleshipMainMenu extends JFrame {
 						JOptionPane.PLAIN_MESSAGE, null, modes, modes[0]);
 				
 				if (option == 1){
+					/*
+					 * 	Refer to the constructor of BattleshipMP
+					 */
+					
 					new BattleshipMP(8000);
 					
 				} else {
+					
+					/*
+					 *	Asking for the IP of the server from the user
+					 */
 					String serverIP = JOptionPane.showInputDialog(null, "Please enter the server IP");
 					
 					new BattleshipMP(serverIP, 8000, false);
@@ -130,7 +177,7 @@ public class BattleshipMainMenu extends JFrame {
 
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
-				String aboutString = "<html><h1>Battleship</h1><h2><br>By: Philip Huang, Jim Gao, Joseph Zhang</h2></html>";
+				String aboutString = "<html><h2>Battleship</h2><b><br>By: Philip Huang, Jim Gao, Joseph Zhang</b></html>";
 				JOptionPane.showMessageDialog(null, aboutString);
 			}
 

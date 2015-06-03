@@ -1,3 +1,10 @@
+/*
+ * 	[MapEditor.java]
+ * 
+ * 	Author: Philip Huang, Jim Gao, Joseph Zhang
+ * 	Purpose: A map editor for the battleship
+ */
+
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Font;
@@ -26,6 +33,9 @@ public class MapEditor extends JFrame implements ActionListener{
 	public int[][] playerGrid = new int[10][10];
 	public int currentPlacement = 1;
 	
+	/*
+	 * 	Initialization and construction of GUI
+	 */
 	public MapEditor(){
 		init();
 		
@@ -62,6 +72,13 @@ public class MapEditor extends JFrame implements ActionListener{
 				playerGrid[i][j] = 0;
 	}
 	
+	/*
+	 * 	Checks the validity of the current grid, makes sure that:
+	 * 		- NO ship overlaps
+	 * 		- NO ship is out of bounds
+	 * 		- Every ship is placed
+	 */
+	
 	public boolean validityCheck() {
 		if (currentPlacement != 5)
 			return false;
@@ -82,13 +99,22 @@ public class MapEditor extends JFrame implements ActionListener{
 
 	@Override
 	public void actionPerformed(ActionEvent e) {
+		
+		/*
+		 * 	If the user clicks submit, run the validity check and submits
+		 */
 		if (e.getActionCommand().equals("submit")){
 			if (validityCheck()){
 				return;
 			} else {
-				JOptionPane.showMessageDialog(null, "Invalid Placement, try again bitch");
+				JOptionPane.showMessageDialog(null, "Invalid Placement, please try again");
 			}
 		} else {
+			/*
+			 * 	When a user clicks a cell, it calculates the starting and ending point 
+			 * 	of the current ship. If there is any errors, then prompt the user
+			 */
+			
 			int locationX = Integer.parseInt(e.getActionCommand().split(" ")[0]);
 			int locationY = Integer.parseInt(e.getActionCommand().split(" ")[1]);
 			
@@ -98,6 +124,9 @@ public class MapEditor extends JFrame implements ActionListener{
 					"Please select ship orientation", "Ship Orientation", JOptionPane.YES_NO_OPTION,
 					JOptionPane.PLAIN_MESSAGE, null, strOrientation, strOrientation[0]);
 			
+			/*
+			 * 	Vertical or Horizontal placement
+			 */
 			if (option == 0){
 				int cY = locationY + shipSize[currentPlacement - 1] - 1;
 				

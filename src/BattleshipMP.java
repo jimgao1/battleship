@@ -1,3 +1,11 @@
+/*
+ * 	[BattleshipMP.java]
+ * 
+ * 	Author: Philip Huang, Jim Gao, Joseph Zhang
+ * 	Purpose: The multiplayer portion of the code, where it establishes
+ * 			connection with another client over LAN
+ */
+
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Dimension;
@@ -391,6 +399,13 @@ public class BattleshipMP extends JFrame implements ActionListener, Runnable{
 		
 		System.out.println("\n[INFO]\tNew Round Started. PlayerTurn = " + playerTurn);
 		
+		/*
+		 * 	If it is the player's turn, then it enables the buttons, and then 
+		 * 	waits for the player to click on one,
+		 * 
+		 * 	else, it waits for the other client to send the coordinates and makes
+		 * 	the corresponding response over the socket.
+		 */
 		if (playerTurn){
 			updateScoreBoard();
 			this.getContentPane().repaint();
@@ -435,6 +450,9 @@ public class BattleshipMP extends JFrame implements ActionListener, Runnable{
 			
 			System.out.println("[INFO]\tWaiting for server....");
 			
+			/*
+			 * 	Reads the coordinate from the other client
+			 */
 			String cmd = "";
 			
 			try{
@@ -450,6 +468,9 @@ public class BattleshipMP extends JFrame implements ActionListener, Runnable{
 			int hitLocationX = Integer.parseInt(cmd.split(" ")[0]);
 			int hitLocationY = Integer.parseInt(cmd.split(" ")[1]);			
 			
+			/*
+			 * 	Checks with the current board, and makes the corresponding response
+			 */
 			if (!singlePlayer){
 				System.out.println("[INFO]\thitLocationX = " + hitLocationX + ", hitLocationY = " + hitLocationY);
 				

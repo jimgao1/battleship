@@ -1,3 +1,12 @@
+/*
+ * 	[KillAlgorithm.java]
+ * 
+ * 	Author: Philip Huang, Jim Gao, Joseph Zhang
+ * 	Purpose: The hunt algorithm, used when the computer is SOMEWHAT CERTAIN 
+ * 			about the user's placement, and is searching for the most probable
+ * 			location around the existing hits
+ */
+
 import java.util.LinkedList;
 import java.util.Queue;
 
@@ -18,16 +27,26 @@ public class KillAlgorithm {
 		killGrid = new int[BattleshipSP.gridSizeX][BattleshipSP.gridSizeY];
 	}
 	
+	/*
+	 * 	Consults the grid from BattleshipSP, and makes the corresponding calculations
+	 * 	about the probability of placement in a specific cell
+	 */
 	public static void recalculate(){
 		
 		KillAlgorithm.killGrid = (int[][])BattleshipSP.gridState.clone();
 		
 		double[][] prob = new double[BattleshipSP.gridSizeX][BattleshipSP.gridSizeY];
 		
+		//Array Initialization
 		for (int i = 0; i < BattleshipSP.gridSizeX; i++)
 			for (int j = 0; j < BattleshipSP.gridSizeY; j++)
 				prob[i][j] = 0;
 		
+		/*
+		 * 	Goes through each cell, and then iterates through all the possible
+		 * 	ship placements. Then increments 1 for the possible locations, forming
+		 * 	the final ship probability grid.
+		 */
 		for (int cX = 0; cX < BattleshipSP.gridSizeX; cX++){
 			for (int cY = 0; cY < BattleshipSP.gridSizeY; cY++){
 				
@@ -99,6 +118,9 @@ public class KillAlgorithm {
 		
 		BattleshipSP.gridProbability = prob;
 		
+		/*
+		 * 	Prints the final probability chart for debugging purposes
+		 */
 		System.out.println("[DEBUG]\tGrid Probability Updated");
 		for (int i = 0; i < BattleshipSP.gridSizeY; i++){
 			for (int j = 0; j < BattleshipSP.gridSizeX; j++)

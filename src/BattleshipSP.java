@@ -2,6 +2,8 @@
  * 	[AlgorithmMain.java]
  * 
  * 	Author: Philip Huang, Jim Gao, Joseph Zhang
+ * 	Purpose: The single player module of the code, allows a player to
+ * 				play against the AI
  */
 
 import java.awt.BorderLayout;
@@ -60,6 +62,7 @@ public class BattleshipSP extends JFrame implements ActionListener{
 	 * Algorithm Configuration
 	 */
 
+	//Grid Sizes, and also sizes of ships
 	public static final int gridSizeX = 10;
 	public static final int gridSizeY = 10;
 
@@ -76,15 +79,20 @@ public class BattleshipSP extends JFrame implements ActionListener{
 	 * Game Variables
 	 */
 	
+	/*
+	 * 	A list of current, not sunk ships, used during the pop ups in the AI
+	 */
 	public static ArrayList<String> activeShipNames = new ArrayList<String>();
 
 	public static int[] shipState = new int[5];
 
 	public static int playerHit = 0, playerSank = 0;
 	public static int computerHit = 0, computerSank = 0;
-	
+
+	/*
+	 * 	The program will pick one of the least probable cell, 20% of the time
+	 */
 	public static int leastProbableCounter = 1;
-	
 
 
 	/*
@@ -137,11 +145,18 @@ public class BattleshipSP extends JFrame implements ActionListener{
 	 */
 	public static void printToFile(){
 		try{
+			/*
+			 * 	Creates the file based on the current date
+			 */
+			
 			DateFormat dateFormat = new SimpleDateFormat("yyyy_MM_dd");
 			String fileName = dateFormat.format(new Date());
 			
 			PrintWriter writer = new PrintWriter(new FileWriter(new File(fileName + ".txt")));
 			
+			/*
+			 * 	Prints the game grid, as well as greeting information
+			 */
 			writer.println(bannerBattleship);
 			writer.println("\n");
 			writer.println(bannerTeamNull);
@@ -153,6 +168,9 @@ public class BattleshipSP extends JFrame implements ActionListener{
 				writer.print("\r\n");
 			}
 			
+			/*
+			 * 	Prints the game statistics of the game when finished
+			 */
 			String message = "\r\nGame Statistics: ";
 			
 			message += "Computer made " + computerHit + " shots.\r\n";
@@ -168,6 +186,9 @@ public class BattleshipSP extends JFrame implements ActionListener{
 			JOptionPane.showMessageDialog(null, "Game log written to file: " + fileName + ".txt");
 			
 		} catch (IOException ex){
+			/*
+			 * 	If the file save was unsuccessful, then tell that to the user
+			 */
 			JOptionPane.showMessageDialog(null, "File writing unsuccessful: " + ex.getLocalizedMessage());
 		}
 	}
@@ -179,13 +200,26 @@ public class BattleshipSP extends JFrame implements ActionListener{
 	public int[][] generateRandomPlacement() {
 		int[][] randomGrid = new int[10][10];
 
+		/*
+		 * 	Initialization of the random grid
+		 */
 		for (int i = 0; i < 10; i++)
 			for (int j = 0; j < 10; j++)
 				randomGrid[i][j] = 0;
 
+		/*
+		 * 	Outer loop goes through all the possible ships
+		 */
 		for (int i = 0; i < BattleshipSP.shipCount; i++) {
 			int pX = (int) (Math.random() * 10), pY = (int) (Math.random() * 10);
 			boolean vert = (Math.random() >= 0.5);
+			
+			/*
+			 * 	Boolean value of is the current placement is valid, meaning:
+			 * 		- No element is OUT OF BOUNDS
+			 * 		- No ships are on top of each other
+			 * 		- No intersections
+			 */
 			boolean valid = true;
 
 			if (vert) {
@@ -258,6 +292,9 @@ public class BattleshipSP extends JFrame implements ActionListener{
 		gridPanel.setLayout(new GridLayout(10, 10));
 		gridPanel.setPreferredSize(new Dimension(400, 400));
 		
+		/*
+		 * 	Construction of the grid on the right (user grid)
+		 */
 		for (int i=0; i<10; i++){
 			for (int j=0; j<10; j++){
 				buttonGrid[i][j] = new JButton();
@@ -273,6 +310,12 @@ public class BattleshipSP extends JFrame implements ActionListener{
 		
 		/*
 		 * 	side panel construction
+		 * 
+		 * 	There are 3 buttons:
+		 * 		"Start Game": starts the game
+		 * 		"End Game": Ends the game, and outputs the states to a file
+		 * 		"Restart Game": Starts a new instance of the class, and 
+		 * 						disposes the current one
 		 */
 		
 		sidePanel.setLayout(new GridLayout(2, 1));
@@ -352,6 +395,9 @@ public class BattleshipSP extends JFrame implements ActionListener{
 		boolean computerWin = false;
 		boolean tie = false;
 		
+		/*
+		 * 	Boolean logic to determine the win/lose condition
+		 */
 		if (computerSank == 5 || playerSank == 5){
 			if (computerSank == 5){
 				computerWin = true;
@@ -374,6 +420,10 @@ public class BattleshipSP extends JFrame implements ActionListener{
 			}
 		}
 		
+		/*
+		 * 	Prints an organized list of the game result, and
+		 * 	prints it to the user
+		 */
 		String message = "<html>";
 		
 		if (tie){
@@ -407,6 +457,9 @@ public class BattleshipSP extends JFrame implements ActionListener{
 	public static void nextTurn() {
 		counter++;
 		
+		/*
+		 * 	Border check: If there are 50 turns, or one of the player wins
+		 */
 		if (counter >= 50){
 			endGame();
 		}
@@ -425,11 +478,26 @@ public class BattleshipSP extends JFrame implements ActionListener{
 		
 		int maxLocationX = -1;
 		int maxLocationY = -1;
+		
+		/*
+		 * 	There are 2 modes, kill mode and hunt mode.
+		 * 
+		 * 	Hunt mode is used when the computer is UNCERTAIN about the user's placement, 
+		 * 	and when it is guessing for the most probable user positions.
+		 * 
+		 * 	Kill mode is used when the computer is SOMEWHAT CERTAIN about the user's 
+		 * 	placement, and it tries the locations around the most probable locations. 
+		 */
+		
 		if (killModeEngaged) {
 			System.out.println("[INFO]\t***KILL MODE ENGAGED***");
 
 			KillAlgorithm.recalculate();
 
+			/*
+			 * Calculates the most probable location, and returns
+			 * to user
+			 */
 			double maxProb = -1.0D;
 			for (int i = 0; i < 10; i++) {
 				for (int j = 0; j < 10; j++) {
@@ -448,6 +516,11 @@ public class BattleshipSP extends JFrame implements ActionListener{
 		} else {
 			HuntAlgorithm.recalculate();
 			
+			/*
+			 * 	20% of the time, the computer chooses the least probable location,
+			 * 	to deal with some special placements, where the ships are not on the most probable
+			 * 	location. 
+			 */
 			if ((leastProbableCounter ++) % 5 == 0){
 				for (int i=0; i<10; i++)
 					for (int j=0; j<10; j++)
@@ -456,6 +529,11 @@ public class BattleshipSP extends JFrame implements ActionListener{
 						else
 							gridProbability[i][j] = -1 * gridProbability[i][j];
 			}
+			
+			/*
+			 * Calculates the most probable location, and returns
+			 * to user
+			 */
 
 			double maxProb = -1.0D;
 			for (int i = 0; i < 10; i++) {
@@ -473,6 +551,10 @@ public class BattleshipSP extends JFrame implements ActionListener{
 			JOptionPane.showMessageDialog(null, "Suggested Location ("
 					+ (maxLocationX + 1) + ", " + (maxLocationY + 1) + ") ");
 		}
+		
+		/*
+		 * 	Program asks the user about the outcome, and does the corresponding action
+		 */
 		int outcome = JOptionPane.showOptionDialog(null, "HIT or MISS",
 				"Outcome",
 				JOptionPane.YES_OPTION,
@@ -482,6 +564,8 @@ public class BattleshipSP extends JFrame implements ActionListener{
 				outcomes[0]);
 		
 		String s = outcomes[outcome];
+		
+		
 		if (killModeEngaged) {
 			if (s.equals("Sank")) {
 				gridState[maxLocationX][maxLocationY] = 1;
@@ -493,9 +577,15 @@ public class BattleshipSP extends JFrame implements ActionListener{
 					}
 				}
 				
+				/*
+				 * 	Updating the counters
+				 */
 				computerSank ++;
 				computerHit++;
 
+				/*
+				 * 	Reasks the user when the user clicks "cancel"
+				 */
 				String ship;
 				
 				do{
@@ -519,6 +609,10 @@ public class BattleshipSP extends JFrame implements ActionListener{
 						killModeEngaged = true;
 			} else if (s.equals("Hit")) {
 				gridState[maxLocationX][maxLocationY] = 1;
+				
+				/*
+				 * 	Reasks the user when the user clicks "cancel"
+				 */
 				String ship;
 				
 				do{
@@ -591,11 +685,18 @@ public class BattleshipSP extends JFrame implements ActionListener{
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		if (e.getActionCommand().equals("start")) {
+			/*
+			 * 	Prints the rules and introduces the user to the game
+			 */
+			
 			JOptionPane.showMessageDialog(null, rules);
 			String s = JOptionPane.showInputDialog(null, "Please enter your name.");
 			
 			JOptionPane.showMessageDialog(null, "Hi, " + s + ", the game starts now.");
 			
+			/*
+			 * 	Allowing the user to click on the enemy's grid
+			 */
 			for (int i = 0; i < 10; i++) {
 				for (int j = 0; j < 10; j++) {
 					buttonGrid[i][j].setEnabled(true);
@@ -614,8 +715,16 @@ public class BattleshipSP extends JFrame implements ActionListener{
 			this.dispose();
 			return;
 		}
+		
+		/*
+		 * 	If the button clicked was on the grid, then handles the request
+		 */
 		int gridX = Integer.parseInt(e.getActionCommand().split(" ")[0]);
 		int gridY = Integer.parseInt(e.getActionCommand().split(" ")[1]);
+		
+		/*
+		 * 	Checks if the last hit was a hit, or miss
+		 */
 		
 		if (computerGrid[gridX][gridY] == 0){
 			buttonGrid[gridX][gridY].setBackground(Color.blue);
@@ -625,6 +734,13 @@ public class BattleshipSP extends JFrame implements ActionListener{
 		} else {
 			buttonGrid[gridX][gridY].setBackground(Color.RED);
 			
+			/*
+			 * 	A counter variable, counts the number of remaining ships on the grid
+			 * 	with the current ID. 
+			 * 
+			 * 	If c is 1, it means that the current one is the only one remains, hence
+			 * 	the user sank the ship
+			 */
 			int c = 0;
 			for (int i=0; i<10; i++)
 				for (int j=0; j<10; j++)
