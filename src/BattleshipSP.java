@@ -145,7 +145,7 @@ public class BattleshipSP extends JFrame implements ActionListener{
 	 * 	Function that writes to a file, where the file is named
 	 * 	using the current date, and it saves to the current directory. 
 	 */
-	public static void printToFile(){
+	public static void printToFile(boolean preGame){
 		try{
 			/*
 			 * 	Creates the file based on the current date
@@ -153,6 +153,9 @@ public class BattleshipSP extends JFrame implements ActionListener{
 			
 			DateFormat dateFormat = new SimpleDateFormat("yyyy_MM_dd");
 			String fileName = dateFormat.format(new Date());
+			
+			if (preGame)
+				fileName += "_pregame";
 			
 			PrintWriter writer = new PrintWriter(new FileWriter(new File(fileName + ".txt")));
 			
@@ -163,17 +166,22 @@ public class BattleshipSP extends JFrame implements ActionListener{
 			writer.println("\n");
 			writer.println(bannerTeamNull);
 			
-			writer.println("Computer Grid Placement: ");
+			writer.println("Computer Grid Placement: \r\n------------------------");
 			for (int i=0; i<10; i++){
 				for (int j=0; j<10; j++)
 					writer.print(computerGrid[j][i] + "  ");
 				writer.print("\r\n");
 			}
 			
+			if (preGame){
+				writer.close();
+				return;
+			}
+			
 			/*
 			 * 	Prints the game statistics of the game when finished
 			 */
-			String message = "\r\nGame Statistics: ";
+			String message = "\r\nGame Statistics: \r\n-------------------------\r\n";
 			
 			message += "Computer made " + computerHit + " shots.\r\n";
 			message += "Computer sank " + computerSank + " ships.\r\n";
@@ -446,7 +454,7 @@ public class BattleshipSP extends JFrame implements ActionListener{
 		
 		JOptionPane.showMessageDialog(null, message);
 		
-		printToFile();
+		printToFile(false);
 		
 		System.exit(0);
 		
@@ -713,6 +721,8 @@ public class BattleshipSP extends JFrame implements ActionListener{
 					buttonGrid[i][j].setEnabled(true);
 				}
 			}
+			
+			printToFile(true);
 			
 			endGame.setEnabled(true);
 			restartGame.setEnabled(true);
