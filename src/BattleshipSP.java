@@ -521,9 +521,9 @@ public class BattleshipSP extends JFrame implements ActionListener{
 				}
 			}
 			System.out.println("[INFO]\tSuggested Location ("
-					+ (maxLocationX + 1) + ", " + (maxLocationY + 1) + ") ");
+					+ (maxLocationX + 1) + ", " + (maxLocationY + 1) + ") " + (char)('A' + maxLocationY) + Integer.toString(maxLocationX + 1));
 			JOptionPane.showMessageDialog(null, "Suggested Location ("
-					+ (maxLocationX + 1) + ", " + (maxLocationY + 1) + ") ");
+					+ (maxLocationX + 1) + ", " + (maxLocationY + 1) + ") " + (char)('A' + maxLocationY) + Integer.toString(maxLocationX + 1));
 		} else {
 			HuntAlgorithm.recalculate();
 			
@@ -567,9 +567,9 @@ public class BattleshipSP extends JFrame implements ActionListener{
 				}
 			}
 			System.out.println("[INFO]\tSuggested Location ("
-					+ (maxLocationX + 1) + ", " + (maxLocationY + 1) + ") ");
+					+ (maxLocationX + 1) + ", " + (maxLocationY + 1) + ") " + (char)('A' + maxLocationY) + Integer.toString(maxLocationX + 1));
 			JOptionPane.showMessageDialog(null, "Suggested Location ("
-					+ (maxLocationX + 1) + ", " + (maxLocationY + 1) + ") ");
+					+ (maxLocationX + 1) + ", " + (maxLocationY + 1) + ") " + (char)('A' + maxLocationY) + Integer.toString(maxLocationX + 1));
 		}
 		
 		/*
@@ -744,6 +744,10 @@ public class BattleshipSP extends JFrame implements ActionListener{
 		int gridX = Integer.parseInt(e.getActionCommand().split(" ")[0]);
 		int gridY = Integer.parseInt(e.getActionCommand().split(" ")[1]);
 		
+		System.out.println("[GAME]\tPlayer Hit X: " + gridX);
+		System.out.println("[GAME]\tPlayer Hit Y: " + gridY);
+		
+		
 		/*
 		 * 	Checks if the last hit was a hit, or miss
 		 */
@@ -751,7 +755,7 @@ public class BattleshipSP extends JFrame implements ActionListener{
 		if (computerGrid[gridX][gridY] == 0){
 			buttonGrid[gridX][gridY].setBackground(Color.blue);
 			JOptionPane.showMessageDialog(null, "You Missed.");
-			
+			System.out.println("[GAME]\tIt was a miss.");
 			
 		} else {
 			buttonGrid[gridX][gridY].setBackground(Color.RED);
@@ -774,12 +778,15 @@ public class BattleshipSP extends JFrame implements ActionListener{
 			if (c == 1){
 				JOptionPane.showMessageDialog(null, "You sank the " + shipNames[computerGrid[gridX][gridY] - 1]);
 				playerSank += 1;
+				System.out.println("[GAME]\tIt was a sank.");
 			}else{
 				JOptionPane.showMessageDialog(null, "You hit the " + shipNames[computerGrid[gridX][gridY] - 1]);
-				
+				System.out.println("[GAME]\tIt was a hit.");
 			}
 			
 			computerGrid[gridX][gridY] = 0;
+			
+			System.out.println("\n\n\n");
 		}
 
 		for (int i = 0; i < 10; i++) {
