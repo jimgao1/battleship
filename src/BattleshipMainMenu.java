@@ -1,7 +1,7 @@
 /*
  * 	[BattleshipMainMenu.java]
  * 
- * 	Author: Philip Huang, JimGao, Joseph Zhang
+ * 	Author: Philip Huang, Jim Gao, Joseph Zhang
  * 	Purpose: The launcher of the various modes, also the 
  * 			entry point of the program
  */

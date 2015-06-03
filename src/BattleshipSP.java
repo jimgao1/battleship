@@ -521,13 +521,22 @@ public class BattleshipSP extends JFrame implements ActionListener{
 			 * 	to deal with some special placements, where the ships are not on the most probable
 			 * 	location. 
 			 */
-			if ((leastProbableCounter ++) % 5 == 0){
-				for (int i=0; i<10; i++)
-					for (int j=0; j<10; j++)
+			if ((leastProbableCounter ++) % 6 == 0){
+				System.out.println("leastProbableCounter = " + leastProbableCounter);
+				
+				for (int i = 0; i < 10; i++)
+					for (int j = 0; j < 10; j++)
 						if (gridProbability[i][j] == 0)
-							gridProbability[i][j] = Integer.MIN_VALUE;
+							gridProbability[i][j] = 0;
 						else
-							gridProbability[i][j] = -1 * gridProbability[i][j];
+							gridProbability[i][j] = 10000 - gridProbability[i][j];
+
+				System.out.println("New Probability Grid: \n");
+				for (int i = 0; i < 10; i++) {
+					for (int j = 0; j < 10; j++)
+						System.out.printf("%f\t", gridProbability[j][i]);
+					System.out.println();
+				}
 			}
 			
 			/*
