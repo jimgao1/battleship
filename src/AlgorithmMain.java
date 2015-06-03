@@ -17,6 +17,7 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 
 import javax.swing.JButton;
@@ -70,6 +71,8 @@ public class AlgorithmMain extends JFrame implements ActionListener{
 
 	public static final String[] shipNames = { "Destroyer", "Submarine",
 			"Cruiser", "Battleship", "Carrier" };
+	
+	public static ArrayList<String> activeShipNames = new ArrayList<String>();
 
 	public static int[] shipState = new int[5];
 
@@ -304,6 +307,13 @@ public class AlgorithmMain extends JFrame implements ActionListener{
 		 */
 		computerGrid = generateRandomPlacement();
 		
+		/*
+		 *	Adds the ships names into the active ship list
+		 */
+		
+		for (String currentShip : shipNames)
+			activeShipNames.add(currentShip);
+		
 	}
 	
 	/*
@@ -325,6 +335,7 @@ public class AlgorithmMain extends JFrame implements ActionListener{
 		HuntAlgorithm.recalculate();
 		
 	}
+	
 	
 	/*
 	 * 	A method that judges the win/lose condition, and then
@@ -473,14 +484,16 @@ public class AlgorithmMain extends JFrame implements ActionListener{
 				
 				do{
 					ship = (String) JOptionPane.showInputDialog(null,
-							"Which ship is hit?", "", JOptionPane.QUESTION_MESSAGE,
-						null, shipNames, "");
+							"Which ship is sunk?", "", JOptionPane.QUESTION_MESSAGE,
+						null, activeShipNames.toArray(), "");
 				} while(ship == null);
 
 				int shipID = -1;
 				for (int i = 0; i < 5; i++)
 					if (shipNames[i].equals(ship))
 						shipID = i;
+				
+				activeShipNames.remove(shipID);
 
 				shipState[shipID] = 2;
 
@@ -495,7 +508,7 @@ public class AlgorithmMain extends JFrame implements ActionListener{
 				do{
 					ship = (String) JOptionPane.showInputDialog(null,
 							"Which ship is hit?", "", JOptionPane.QUESTION_MESSAGE,
-						null, shipNames, "");
+						null, activeShipNames.toArray(), "");
 				} while(ship == null);
 				
 				
@@ -528,7 +541,7 @@ public class AlgorithmMain extends JFrame implements ActionListener{
 			do{
 				ship = (String) JOptionPane.showInputDialog(null,
 						"Which ship is hit?", "", JOptionPane.QUESTION_MESSAGE,
-					null, shipNames, "");
+					null, activeShipNames.toArray(), "");
 			} while(ship == null);
 			
 			int shipID = -1;
