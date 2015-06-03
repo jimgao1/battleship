@@ -295,14 +295,14 @@ public class BattleshipMP extends JFrame implements ActionListener, Runnable{
 			for (int j = 0; j < 10; j++)
 				randomGrid[i][j] = 0;
 
-		for (int i = 0; i < AlgorithmMain.shipCount; i++) {
+		for (int i = 0; i < BattleshipSP.shipCount; i++) {
 			int pX = (int) (Math.random() * 10), pY = (int) (Math.random() * 10);
 			boolean vert = (Math.random() >= 0.5);
 			boolean valid = true;
 
 			if (vert) {
- 				if (pY + AlgorithmMain.shipSize[i][0] - 1 < 10) {
-					for (int j = pY; j < pY + AlgorithmMain.shipSize[i][0]; j++)
+ 				if (pY + BattleshipSP.shipSize[i][0] - 1 < 10) {
+					for (int j = pY; j < pY + BattleshipSP.shipSize[i][0]; j++)
 						if (randomGrid[pX][j] != 0) {
 							valid = false;
 							break;
@@ -312,15 +312,15 @@ public class BattleshipMP extends JFrame implements ActionListener, Runnable{
 				}
 
 				if (valid) {
-					for (int j = pY; j < pY + AlgorithmMain.shipSize[i][0]; j++)
+					for (int j = pY; j < pY + BattleshipSP.shipSize[i][0]; j++)
 						randomGrid[pX][j] = i + 1;
 				} else {
 					i--;
 					continue;
 				}
 			} else {
-				if (pX + AlgorithmMain.shipSize[i][0] - 1 < 10) {
-					for (int j = pX; j < pX + AlgorithmMain.shipSize[i][0]; j++)
+				if (pX + BattleshipSP.shipSize[i][0] - 1 < 10) {
+					for (int j = pX; j < pX + BattleshipSP.shipSize[i][0]; j++)
 						if (randomGrid[j][pY] != 0) {
 							valid = false;
 							break;
@@ -330,7 +330,7 @@ public class BattleshipMP extends JFrame implements ActionListener, Runnable{
 				}
 
 				if (valid) {
-					for (int j = pX; j < pX + AlgorithmMain.shipSize[i][0]; j++)
+					for (int j = pX; j < pX + BattleshipSP.shipSize[i][0]; j++)
 						randomGrid[j][pY] = i + 1;
 				} else {
 					i--;
