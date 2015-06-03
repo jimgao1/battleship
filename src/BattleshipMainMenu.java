@@ -89,7 +89,10 @@ public class BattleshipMainMenu extends JFrame {
 		JButton lanMultiplayer = new JButton("LAN Multiplayer");
 		JButton about = new JButton("About");
 		JButton exit = new JButton("Exit");
-
+		
+		/*
+		 * set font for the buttons
+		 */
 		singlePlayer.setFont(new Font("Times New Roman", Font.PLAIN, 20));
 		localMultiplayer.setFont(new Font("Times New Roman", Font.PLAIN, 20));
 		lanMultiplayer.setFont(new Font("Times New Roman", Font.PLAIN, 20));
@@ -172,7 +175,10 @@ public class BattleshipMainMenu extends JFrame {
 			}
 
 		});
-
+		
+		/*
+		 * action listener for about button
+		 */
 		about.addActionListener(new ActionListener() {
 
 			@Override
@@ -182,7 +188,10 @@ public class BattleshipMainMenu extends JFrame {
 			}
 
 		});
-
+		
+		/*
+		 * action listener for exit button
+		 */
 		exit.addActionListener(new ActionListener() {
 
 			@Override
@@ -191,13 +200,15 @@ public class BattleshipMainMenu extends JFrame {
 			}
 
 		});
-
+		
+		// add buttons to the control Panel
 		controlPanel.add(singlePlayer);
 		controlPanel.add(localMultiplayer);
 		controlPanel.add(lanMultiplayer);
 		controlPanel.add(about);
 		controlPanel.add(exit);
-
+		
+		//set layout for main menu
 		this.add(controlPanel, BorderLayout.CENTER);
 
 		this.repaint();

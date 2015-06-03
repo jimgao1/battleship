@@ -18,6 +18,7 @@ public class HuntAlgorithm{
 	 */
 	public static void recalculate(){
 		
+		//declare array
 		double[][] prob = new double[BattleshipSP.gridSizeX][BattleshipSP.gridSizeY];
 		
 		//Array Initialization
@@ -34,29 +35,36 @@ public class HuntAlgorithm{
 			for (int cY = 0; cY < BattleshipSP.gridSizeY; cY++){
 				
 				for (int p = 0; p < BattleshipSP.shipCount; p++){
+					//horizontal placement
 					int lX = cX + BattleshipSP.shipSize[p][0] - 1, 
 							lY = cY + BattleshipSP.shipSize[p][1] - 1;
 					
+					//check boundaries
 					if (lX >= BattleshipSP.gridSizeX || lY >= BattleshipSP.gridSizeY) continue;
 					
+					//check if the selected area is occupied or not
 					boolean areaOccupied = false;
-					
+
 					for (int i = cX; i <= lX; i++)
 						if (BattleshipSP.gridState[i][cY] != 0)
 							areaOccupied = true;
 					
 					if (areaOccupied) continue;
 					
+					// add probability if the area has never been fired
 					for (int i = cX; i <= lX; i++)
 						prob[i][cY] += 1;
 				}
 				
+				//vertical placement
 				for (int p = 0; p < BattleshipSP.shipCount; p++){
 					int lX = cX + BattleshipSP.shipSize[p][1] - 1, 
 							lY = cY + BattleshipSP.shipSize[p][0] - 1;
 					
+					//check boundaries
 					if (lX >= BattleshipSP.gridSizeX || lY >= BattleshipSP.gridSizeY) continue;
 					
+					//check if the selected area is occupied or not
 					boolean areaOccupied = false;
 					
 					for (int i = cY; i <= lY; i++)
@@ -65,6 +73,7 @@ public class HuntAlgorithm{
 					
 					if (areaOccupied) continue;
 					
+					// add probability if the area has never been fired
 					for (int i = cY; i <= lY; i++)
 						prob[cX][i] += 1;
 				}
@@ -74,6 +83,7 @@ public class HuntAlgorithm{
 			
 		}
 		
+		//update gridProbability in battleship singleplayer
 		BattleshipSP.gridProbability = prob;
 		
 		/*

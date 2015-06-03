@@ -28,13 +28,15 @@ public class EasterEgg {
 		public int randomY() {
 			return (int) (Math.random() * 1080.0D) + 1;
 		}
-
+		
+		//constructor
 		public TrollThread() {
 			setSize(400, 200);
 			setDefaultCloseOperation(1);
 			setLayout(null);
 			setLocation(randomX(), randomY());
-
+			
+			//initialize label
 			JLabel l = new JLabel("TEAM NULL FTW");
 			l.setFont(new Font("Courier New", 1, 40));
 			l.setBounds(0, 0, 780, 180);
@@ -46,7 +48,8 @@ public class EasterEgg {
 			setVisible(true);
 		}
 	}
-
+	
+	// pop up windowCount numbers of window
 	public EasterEgg() {
 		for (int i = 0; i < windowCount; i++)
 			new Thread(new TrollThread()).start();
