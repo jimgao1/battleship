@@ -103,6 +103,7 @@ public class BattleshipMP extends JFrame implements ActionListener, Runnable{
 	public int[][] playerStatusGrid = new int[10][10];
 	public int[][] opponentStatusGrid = new int[10][10];
 	
+	// booleans to determin the player turn
 	public boolean playerTurn;
 	
 	public boolean firstRun = true;
@@ -145,6 +146,7 @@ public class BattleshipMP extends JFrame implements ActionListener, Runnable{
 			JOptionPane.showMessageDialog(null, "Player Connected. IP: " + sock.getInetAddress());
 			playerTurn = true;
 			
+			//initialize GUI
 			this.initGUI();
 			this.generateRandomPlacement();
 		
@@ -213,15 +215,20 @@ public class BattleshipMP extends JFrame implements ActionListener, Runnable{
 	 * 	builds it, and adds the action listener. 
 	 */
 	public void initGUI(){
+		/* 
+		 * set up title, size, layout and location
+		 */
 		this.setTitle("Battleship");
 		this.setSize(1200, 500);
 		this.setVisible(true);
 		this.setLayout(new BorderLayout(20, 5));
 		this.setLocation(100, 100);
 		this.setResizable(false);
-
+		
+		//set layout 
 		pnlHeader.setLayout(new BorderLayout());
-
+		
+		//set font
 		lblLeft.setFont(new Font("Courier New", Font.BOLD, 16));
 		lblRight.setFont(new Font("Courier New", Font.BOLD, 16));
 		lblCenter.setFont(new Font("Courier New", Font.BOLD, 16));
@@ -229,7 +236,7 @@ public class BattleshipMP extends JFrame implements ActionListener, Runnable{
 		pnlHeader.add(lblLeft, BorderLayout.WEST);
 		pnlHeader.add(lblRight, BorderLayout.EAST);
 		pnlHeader.add(lblCenter, BorderLayout.CENTER);
-
+		
 		this.add(pnlHeader, BorderLayout.NORTH);
 
 		pnlOpponent.setLayout(new GridLayout(10, 10));
@@ -240,11 +247,12 @@ public class BattleshipMP extends JFrame implements ActionListener, Runnable{
 		 */
 		for (int i = 0; i < 10; i++) {
 			for (int j = 0; j < 10; j++) {
-				opponentButtonGrid[i][j] = new JButton();
+				opponentButtonGrid[i][j] = new JButton();//initialize button
 				opponentButtonGrid[i][j].setActionCommand(i + " " + j);
-				opponentButtonGrid[i][j].addActionListener(this);
-				opponentButtonGrid[i][j].setFont(new Font("Courier New", Font.BOLD, 14));
+				opponentButtonGrid[i][j].addActionListener(this);//add action listener
+				opponentButtonGrid[i][j].setFont(new Font("Courier New", Font.BOLD, 14));//set font
 				
+				//determine the turn to enable/disable the buttons
 				if (!playerTurn)
 					opponentButtonGrid[i][j].setEnabled(false);
 				
@@ -270,17 +278,20 @@ public class BattleshipMP extends JFrame implements ActionListener, Runnable{
 				pnlPlayer.add(playerButtonGrid[i][j]);
 			}
 		}
-
+		
 		this.add(pnlPlayer, BorderLayout.EAST);
-
+		
+		//set layout for panel control
 		pnlControls.setLayout(new GridLayout(1, 1));
 		
 		scoreBoard.setFont(new Font("Courier New", Font.PLAIN, 15));
-
+		
+		//add scoreBoard to panel control
 		pnlControls.add(scoreBoard);
 		this.add(pnlControls, BorderLayout.CENTER);
-
+		
 		lblStatus.setFont(new Font("Courier New", Font.BOLD, 16));
+		//add lbl Status to the GUI
 		this.add(lblStatus, BorderLayout.SOUTH);
 		
 		this.repaint();
@@ -299,17 +310,20 @@ public class BattleshipMP extends JFrame implements ActionListener, Runnable{
 	public void generateRandomPlacement() {
 		int[][] randomGrid = new int[10][10];
 		
+		//initialize random Grid
 		for (int i = 0; i < 10; i++)
 			for (int j = 0; j < 10; j++)
 				randomGrid[i][j] = 0;
-
+		
+		//for loop through 5 ships
 		for (int i = 0; i < BattleshipSP.shipCount; i++) {
 			int pX = (int) (Math.random() * 10), pY = (int) (Math.random() * 10);
-			boolean vert = (Math.random() >= 0.5);
+			boolean vert = (Math.random() >= 0.5);//determine vertical or horizontal
 			boolean valid = true;
-
+			
+			//vertical placement
 			if (vert) {
- 				if (pY + BattleshipSP.shipSize[i][0] - 1 < 10) {
+ 				if (pY + BattleshipSP.shipSize[i][0] - 1 < 10) {//check out of bound condition
 					for (int j = pY; j < pY + BattleshipSP.shipSize[i][0]; j++)
 						if (randomGrid[pX][j] != 0) {
 							valid = false;
@@ -326,8 +340,8 @@ public class BattleshipMP extends JFrame implements ActionListener, Runnable{
 					i--;
 					continue;
 				}
-			} else {
-				if (pX + BattleshipSP.shipSize[i][0] - 1 < 10) {
+			} else {//horizontal condition
+				if (pX + BattleshipSP.shipSize[i][0] - 1 < 10) {//check out of bound
 					for (int j = pX; j < pX + BattleshipSP.shipSize[i][0]; j++)
 						if (randomGrid[j][pY] != 0) {
 							valid = false;
@@ -414,6 +428,7 @@ public class BattleshipMP extends JFrame implements ActionListener, Runnable{
 			if (!this.singlePlayer) 
 				JOptionPane.showMessageDialog(null, "It is YOUR TURN");
 			
+			//refresh the opponent grid when turn switches
 			for (int i = 0; i < 10; i++) {
 				for (int j = 0; j < 10; j++) {
 					opponentButtonGrid[i][j].setEnabled(false);
@@ -485,18 +500,21 @@ public class BattleshipMP extends JFrame implements ActionListener, Runnable{
 					writer.flush();
 					System.out.println("[INFO]\tEnemy Hit");
 					
-					
+					/*
+					 * check the ship conditions
+					 */
 					int shipID = playerGrid[hitLocationX][hitLocationY];
 					int shipCount = 0;
-	
+					
 					for (int i = 0; i < 10; i++)
 						for (int j = 0; j < 10; j++)
 							if (playerGrid[i][j] == shipID)
 								shipCount++;
 					
+					//check ship that has been sunk
 					if (shipCount == 1){
 						writer.println("true");
-						System.out.println("[INFO]\tThe ship was sank.");
+						System.out.println("[INFO]\tThe ship was sunk.");
 						enemySank += 1;
 						if (enemySank >= 5){
 							System.out.println("[INFO]\tYou have lost the game. ");
@@ -507,6 +525,7 @@ public class BattleshipMP extends JFrame implements ActionListener, Runnable{
 						writer.println("false");
 					}
 					
+					// update grid
 					playerGrid[hitLocationX][hitLocationY] = -1;
 					
 					playerButtonGrid[hitLocationX][hitLocationY].setIcon(new ImageIcon("fire.png"));
@@ -518,6 +537,7 @@ public class BattleshipMP extends JFrame implements ActionListener, Runnable{
 			
 				JOptionPane.showMessageDialog(null, msg);
 				
+				//ask for result
 				String s = (String) JOptionPane.showInputDialog(null,
 						"What is the result? ", "",
 						JOptionPane.QUESTION_MESSAGE, null,
@@ -582,12 +602,14 @@ public class BattleshipMP extends JFrame implements ActionListener, Runnable{
 			System.out.println("[ERROR]\tSocket read error: " + ex.getLocalizedMessage());
 		}
 		
+		// GUI action if missed
 		if (cmd.equals("miss")){
 			System.out.println("[INFO]\tServer Response: miss");
 			opponentButtonGrid[locationX][locationY].setIcon(new ImageIcon("water.png"));
 			opponentButtonGrid[locationX][locationY].setBackground(Color.BLUE);
 			JOptionPane.showMessageDialog(null, "It was a MISS");
 		} else {
+			//GUI action if hit
 
 			/*
 			 * 		Get if the ship is sunk
@@ -611,6 +633,7 @@ public class BattleshipMP extends JFrame implements ActionListener, Runnable{
 			opponentButtonGrid[locationX][locationY].setIcon(new ImageIcon("fire.png"));
 			opponentButtonGrid[locationX][locationY].setBackground(Color.RED);
 			
+			//out put the ship name
 			if (sunk)
 				JOptionPane.showMessageDialog(null, "You sank the " + shipNames[shipID - 1]);
 			else
@@ -623,7 +646,8 @@ public class BattleshipMP extends JFrame implements ActionListener, Runnable{
 				this.dispose();
 			}
 		}
-
+		
+		// set opponent grid disabled
 		for (int i = 0; i < 10; i++)
 			for (int j = 0; j < 10; j++)
 				opponentButtonGrid[i][j].setEnabled(false);
@@ -632,7 +656,7 @@ public class BattleshipMP extends JFrame implements ActionListener, Runnable{
 		updateScoreBoard();
 		nextTurn();
 	}
-
+	
 	/*
 	 *	Not currently used. 
 	 */
@@ -641,6 +665,5 @@ public class BattleshipMP extends JFrame implements ActionListener, Runnable{
 		// TODO Auto-generated method stub
 		
 	}
-	
 	
 }
