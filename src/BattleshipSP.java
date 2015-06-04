@@ -619,7 +619,8 @@ public class BattleshipSP extends JFrame implements ActionListener{
 					if (shipNames[i].equals(ship))
 						shipID = i;
 				
-				activeShipNames.remove(shipID);
+				//activeShipNames.remove(shipID);
+				//activeShipNames.remove(activeShipNames.indexOf(ship));
 
 				shipState[shipID] = 2;
 
@@ -733,9 +734,8 @@ public class BattleshipSP extends JFrame implements ActionListener{
 			endGame();
 			return;
 		} else if (e.getActionCommand().equals("restart")) {
-			new BattleshipSP();
-			this.dispose();
-			return;
+			JOptionPane.showMessageDialog(null, "coward, what are u tring to do, keep going");
+			
 		}
 		
 		/*
