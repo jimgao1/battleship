@@ -556,9 +556,27 @@ public class BattleshipSP extends JFrame implements ActionListener{
 			 * Calculates the most probable location, and returns
 			 * to user
 			 */
-
+			
 			double maxProb = -1.0D;
-			for (int i = 0; i < 10; i++) {
+			int sumP=0; 
+			for(int i = 0; i < 10; i++){
+				for(int j = 0; j < 10; j++){
+					sumP+=gridProbability[i][j];
+				}
+			}
+			int randomP=(int)(Math.random()*sumP);
+			mainLoop: 
+			for(int i=0;i<10;i++)
+				for(int j=0;j<10;j++){
+					if(randomP<gridProbability[i][j])
+					{
+						maxLocationX=i;
+						maxLocationY=j;
+						break mainLoop;
+					}
+					randomP-=gridProbability[i][j];
+				}
+			/*for (int i = 0; i < 10; i++) {
 				for (int j = 0; j < 10; j++) {
 					if ((gridProbability[i][j] > maxProb)
 							&& (gridState[i][j] == 0)) {
@@ -567,7 +585,7 @@ public class BattleshipSP extends JFrame implements ActionListener{
 						maxLocationY = j;
 					}
 				}
-			}
+			}*/
 			System.out.println("[INFO]\tSuggested Location ("
 					+ (maxLocationX + 1) + ", " + (maxLocationY + 1) + ") " + (char)('A' + maxLocationY) + Integer.toString(maxLocationX + 1));
 			JOptionPane.showMessageDialog(null, "Suggested Location ("
