@@ -8,7 +8,9 @@ This is a battleship implementation in Java, for the ICS3U course.
 Contributors
 ------
 > jimthenerd (Jim Gao)
+
 > hyzzsq (Philip Huang)
+
 > joSepH0Zz (Joseph Zhang)
 
 Building
@@ -20,7 +22,7 @@ Algorithm
 ------
 The AI for this project uses a "probability matrix / grid" algorithm,
 to find the most probable positions. The implementation of this
-algorithm is in the file 'BattleshipSP.java'.
+algorithm is in the file `BattleshipSP.java`.
 
 Error Reporting
 ------
