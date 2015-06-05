@@ -112,6 +112,7 @@ public class BattleshipSP extends JFrame implements ActionListener{
 	 */
 
 	public static int[][] gridState = new int[gridSizeX][gridSizeY];
+	public static int[][] originalPlacement = new int[10][10];
 	public static double[][] gridProbability = new double[gridSizeX][gridSizeY];
 
 	public static boolean[] shipSank = new boolean[shipCount];
@@ -367,6 +368,7 @@ public class BattleshipSP extends JFrame implements ActionListener{
 		 * the computer one. 
 		 */
 		computerGrid = generateRandomPlacement();
+		originalPlacement = (int[][]) computerGrid.clone();
 		
 		/*
 		 *	Adds the ships names into the active ship list
@@ -591,7 +593,10 @@ public class BattleshipSP extends JFrame implements ActionListener{
 				gridState[maxLocationX][maxLocationY] = 1;
 				for (int i = 0; i < 10; i++) {
 					for (int j = 0; j < 10; j++) {
-						if (gridState[i][j] == 1) {
+						if (gridState[i][j] == 1 && 
+								originalPlacement[i][j] == originalPlacement[maxLocationX][maxLocationY]) {
+							
+							//Makes sure that only the current ship get to be set visited, not all hit ships
 							gridState[i][j] = 2;
 						}
 					}
