@@ -597,7 +597,7 @@ public class BattleshipSP extends JFrame implements ActionListener{
 					JOptionPane.PLAIN_MESSAGE,
 					null,
 					new String[]{"Yes", "No"},
-					"Yes");
+					"No");
 			
 			if (response == 0) break;
 					
@@ -637,7 +637,7 @@ public class BattleshipSP extends JFrame implements ActionListener{
 					if (JOptionPane.showOptionDialog(null, "Are you sure?",
 							"Confirmation", JOptionPane.YES_NO_OPTION,
 							JOptionPane.PLAIN_MESSAGE, null, new String[] {
-									"Yes", "No" }, "Yes") == 0) {
+									"Yes", "No" }, "No") == 0) {
 						break;
 					}
 				}
@@ -676,7 +676,7 @@ public class BattleshipSP extends JFrame implements ActionListener{
 					if (JOptionPane.showOptionDialog(null, "Are you sure?",
 							"Confirmation", JOptionPane.YES_NO_OPTION,
 							JOptionPane.PLAIN_MESSAGE, null, new String[] {
-									"Yes", "No" }, "Yes") == 0) {
+									"Yes", "No" }, "No") == 0) {
 						break;
 					}
 				}
@@ -718,7 +718,7 @@ public class BattleshipSP extends JFrame implements ActionListener{
 				if (JOptionPane.showOptionDialog(null, "Are you sure?",
 						"Confirmation", JOptionPane.YES_NO_OPTION,
 						JOptionPane.PLAIN_MESSAGE, null, new String[] { "Yes",
-								"No" }, "Yes") == 0) {
+								"No" }, "No") == 0) {
 					break;
 				}
 			}
@@ -779,11 +779,20 @@ public class BattleshipSP extends JFrame implements ActionListener{
 			startGame.setEnabled(false);
 			return;
 		} else if (e.getActionCommand().equals("end")) {
+			while(true){
+				if (JOptionPane.showOptionDialog(null, "Are you sure?",
+						"Confirmation", JOptionPane.YES_NO_OPTION,
+						JOptionPane.PLAIN_MESSAGE, null, new String[] { "Yes",
+								"No" }, "No") == 0) {
+					break;
+				} else {
+					return;
+				}
+			}
 			endGame();
 			return;
 		} else if (e.getActionCommand().equals("restart")) {
-			JOptionPane.showMessageDialog(null, "coward, what are u tring to do, keep going");
-			
+			JOptionPane.showMessageDialog(null, "Not Implemented");
 		}
 		
 		/*
