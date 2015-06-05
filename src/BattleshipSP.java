@@ -577,16 +577,31 @@ public class BattleshipSP extends JFrame implements ActionListener{
 		/*
 		 * 	Program asks the user about the outcome, and does the corresponding action
 		 */
-		int outcome = JOptionPane.showOptionDialog(null, "HIT or MISS",
-				"Outcome",
-				JOptionPane.YES_OPTION,
-				JOptionPane.PLAIN_MESSAGE,
-				null,
-				outcomes,
-				outcomes[0]);
+		int outcome;
+		String s;
 		
-		String s = outcomes[outcome];
-		
+		while(true){
+			outcome = JOptionPane.showOptionDialog(null, "HIT or MISS",
+					"Outcome",
+					JOptionPane.YES_OPTION,
+					JOptionPane.PLAIN_MESSAGE,
+					null,
+					outcomes,
+					outcomes[0]);
+			
+			s = outcomes[outcome];
+			
+			int response = JOptionPane.showOptionDialog(null, "Are you sure?",
+					"Confirmation",
+					JOptionPane.YES_NO_OPTION,
+					JOptionPane.PLAIN_MESSAGE,
+					null,
+					new String[]{"Yes", "No"},
+					"Yes");
+			
+			if (response == 0) break;
+					
+		}		
 		
 		if (killModeEngaged) {
 			if (s.equals("Sank")) {
@@ -612,12 +627,20 @@ public class BattleshipSP extends JFrame implements ActionListener{
 				 * 	Reasks the user when the user clicks "cancel"
 				 */
 				String ship;
-				
-				do{
-					ship = (String) JOptionPane.showInputDialog(null,
-							"Which ship is sunk?", "", JOptionPane.QUESTION_MESSAGE,
-						null, activeShipNames.toArray(), "");
-				} while(ship == null);
+				while (true) {
+					do {
+						ship = (String) JOptionPane.showInputDialog(null,
+								"Which ship is sunk?", "",
+								JOptionPane.QUESTION_MESSAGE, null,
+								activeShipNames.toArray(), "");
+					} while (ship == null);
+					if (JOptionPane.showOptionDialog(null, "Are you sure?",
+							"Confirmation", JOptionPane.YES_NO_OPTION,
+							JOptionPane.PLAIN_MESSAGE, null, new String[] {
+									"Yes", "No" }, "Yes") == 0) {
+						break;
+					}
+				}
 
 				int shipID = -1;
 				for (int i = 0; i < 5; i++)
@@ -641,11 +664,22 @@ public class BattleshipSP extends JFrame implements ActionListener{
 				 */
 				String ship;
 				
-				do{
-					ship = (String) JOptionPane.showInputDialog(null,
-							"Which ship is hit?", "", JOptionPane.QUESTION_MESSAGE,
-						null, activeShipNames.toArray(), "");
-				} while(ship == null);
+				while(true){
+					
+					
+					do{
+						ship = (String) JOptionPane.showInputDialog(null,
+								"Which ship is hit?", "", JOptionPane.QUESTION_MESSAGE,
+							null, activeShipNames.toArray(), "");
+					} while(ship == null);
+					
+					if (JOptionPane.showOptionDialog(null, "Are you sure?",
+							"Confirmation", JOptionPane.YES_NO_OPTION,
+							JOptionPane.PLAIN_MESSAGE, null, new String[] {
+									"Yes", "No" }, "Yes") == 0) {
+						break;
+					}
+				}
 				
 				
 				int shipID = -1;
@@ -674,11 +708,20 @@ public class BattleshipSP extends JFrame implements ActionListener{
 			gridState[maxLocationX][maxLocationY] = 1;
 			String ship;
 			
-			do{
-				ship = (String) JOptionPane.showInputDialog(null,
-						"Which ship is hit?", "", JOptionPane.QUESTION_MESSAGE,
-					null, activeShipNames.toArray(), "");
-			} while(ship == null);
+			while (true) {
+				do {
+					ship = (String) JOptionPane.showInputDialog(null,
+							"Which ship is hit?", "",
+							JOptionPane.QUESTION_MESSAGE, null,
+							activeShipNames.toArray(), "");
+				} while (ship == null);
+				if (JOptionPane.showOptionDialog(null, "Are you sure?",
+						"Confirmation", JOptionPane.YES_NO_OPTION,
+						JOptionPane.PLAIN_MESSAGE, null, new String[] { "Yes",
+								"No" }, "Yes") == 0) {
+					break;
+				}
+			}
 			
 			int shipID = -1;
 			for (int i = 0; i < 5; i++)
