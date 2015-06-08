@@ -301,13 +301,20 @@ public class BattleshipSP extends JFrame implements ActionListener{
 			ex.printStackTrace();
 		}
 		
-		gridPanel.setLayout(new GridLayout(10, 10));
+		gridPanel.setLayout(new GridLayout(11, 11));
 		gridPanel.setPreferredSize(new Dimension(400, 400));
 		
 		/*
 		 * 	Construction of the grid on the right (user grid)
 		 */
+		gridPanel.add(new JLabel());
+		for (int j=0; j<10; j++)
+			gridPanel.add(new JLabel(Integer.toString(j + 1), JLabel.CENTER));
+		
 		for (int i=0; i<10; i++){
+			
+			gridPanel.add(new JLabel(Character.toString((char) ('A' + i)), JLabel.CENTER));
+			
 			for (int j=0; j<10; j++){
 				buttonGrid[i][j] = new JButton();
 				buttonGrid[i][j].setActionCommand(i + " " + j);
