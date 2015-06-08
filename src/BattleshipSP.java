@@ -492,7 +492,13 @@ public class BattleshipSP extends JFrame implements ActionListener{
 		 * Update the game status label
 		 */
 		
-		String status = "<html><h2>Single Player</h2><br><h3>Round #" + (counter + 1) + "</h3></html>";
+		String status = "<html><h1>Single Player</h1><br><h2>Round #" + (counter + 1) + "</h2>";
+		status += "<b>AI has: </b>" + computerHit + " hits<br>";
+		status += "<b>AI has: </b>" + computerSank + " sanks<br><br>";
+		
+		status += "<b>Player has: </b>" + playerHit + " hits<br>";
+		status += "<b>Player has: </b>" + playerSank + " sanks<br>";
+		
 		statusLabel.setText(status);
 		
 		
