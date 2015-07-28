@@ -3,7 +3,12 @@ Battleship CompSci Final Assignment
 
 About This
 ------
-This is a battleship implementation in Java, for the ICS3U course. 
+This project is a Java implementation of the popular game Battleship. 
+You can either choose to play someone over LAN, or you can choose to
+play the AI. 
+
+This game was made in May 2015, for the final assignment of the grade 11
+CompSci course. 
 
 Contributors
 ------
