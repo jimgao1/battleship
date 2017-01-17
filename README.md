@@ -12,7 +12,7 @@ CompSci course.
 
 Contributors
 ------
-> jimthenerd (Jim Gao)
+> jimgao1 (Jim Gao)
 
 > hyzzsq (Philip Huang)
 
